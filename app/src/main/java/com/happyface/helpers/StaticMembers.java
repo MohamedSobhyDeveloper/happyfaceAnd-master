@@ -237,45 +237,48 @@ public class StaticMembers {
     }
     //////////////////////Toasts/////////////////////
 
-    private static Toast toast;
-    private static TastyToast tastyToast;
 
 
 
     public static void toastMessageShortSuccess(Context context, String messaage) {
-        if (toast != null)
-            toast.cancel();
-        toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
-        toast.show();
+//        if (toast != null)
+//            toast.cancel();
+//        toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
+//        toast.show();
+        TastyToast.makeText(context,messaage,TastyToast.LENGTH_SHORT,TastyToast.SUCCESS);
     }
 
-    public static void toastMessageShortFailed(Context context, int messaage) {
-        if (toast != null)
-            toast.cancel();
-        toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
-        toast.show();
+    public static void toastMessageShortFailed(Context context, String messaage) {
+//        if (toast != null)
+//            toast.cancel();
+//        toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
+//        toast.show();
+        TastyToast.makeText(context,messaage,TastyToast.LENGTH_SHORT,TastyToast.ERROR);
+
     }
 
-    public static void toastMessageShort(Context context, CharSequence messaage) {
-        if (toast != null)
-            toast.cancel();
-        toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
-        toast.show();
-    }
 
-    public static void toastMessageLong(Context context, int messaage) {
-        if (toast != null)
-            toast.cancel();
-        toast = Toast.makeText(context, messaage, Toast.LENGTH_LONG);
-        toast.show();
-    }
-
-    public static void toastMessageLong(Context context, String messaage) {
-        if (toast != null)
-            toast.cancel();
-        toast = Toast.makeText(context, messaage, Toast.LENGTH_LONG);
-        toast.show();
-    }
+//
+//    public static void toastMessageShort(Context context, CharSequence messaage) {
+//        if (toast != null)
+//            toast.cancel();
+//        toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
+//        toast.show();
+//    }
+//
+//    public static void toastMessageLong(Context context, int messaage) {
+//        if (toast != null)
+//            toast.cancel();
+//        toast = Toast.makeText(context, messaage, Toast.LENGTH_LONG);
+//        toast.show();
+//    }
+//
+//    public static void toastMessageLong(Context context, String messaage) {
+//        if (toast != null)
+//            toast.cancel();
+//        toast = Toast.makeText(context, messaage, Toast.LENGTH_LONG);
+//        toast.show();
+//    }
 
     public static boolean CheckTextInputEditText(TextInputEditText editText, final TextInputLayout textInputLayout, final String errorMessage) {
 

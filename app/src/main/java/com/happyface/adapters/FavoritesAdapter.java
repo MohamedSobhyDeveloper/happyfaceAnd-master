@@ -99,7 +99,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
                         if (!result.getData().isWishlist()) {
                             removeItem(position);
                         }
-                        StaticMembers.toastMessageShort(context, result.getMessage());
+                        StaticMembers.toastMessageShortSuccess(context, result.getMessage());
                     } else {
                         buttonView.setChecked(!buttonView.isChecked());
                         StaticMembers.checkLoginRequired(response.errorBody(), context);
@@ -108,7 +108,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
                             if (response.errorBody() != null) {
                                 errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorWishListResponse.class);
                                 if (errorLoginResponse != null) {
-                                    StaticMembers.toastMessageShort(context, errorLoginResponse.getMessage());
+                                    StaticMembers.toastMessageShortFailed(context, errorLoginResponse.getMessage());
                                 }
                             }
                         } catch (IOException e) {

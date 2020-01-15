@@ -30,4 +30,9 @@ public class ConfirmBillActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         home.setOnClickListener(v -> StaticMembers.startActivityOverAll(ConfirmBillActivity.this, MainActivity.class));
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

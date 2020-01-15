@@ -89,7 +89,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
                     progress.setVisibility(View.GONE);
                     WishlistResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
-                        StaticMembers.toastMessageShort(context, result.getMessage());
+                        StaticMembers.toastMessageShortSuccess(context, result.getMessage());
                     } else {
                         buttonView.setChecked(!buttonView.isChecked());
                         StaticMembers.checkLoginRequired(response.errorBody(), context);
@@ -98,7 +98,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
                             if (response.errorBody() != null) {
                                 errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorWishListResponse.class);
                                 if (errorLoginResponse != null) {
-                                    StaticMembers.toastMessageShort(context, errorLoginResponse.getMessage());
+                                    StaticMembers.toastMessageShortFailed(context, errorLoginResponse.getMessage());
                                 }
                             }
                         } catch (IOException e) {

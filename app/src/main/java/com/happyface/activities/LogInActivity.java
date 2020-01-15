@@ -59,11 +59,11 @@ public class LogInActivity extends BaseActivity {
         final CardView register = findViewById(R.id.register);
         register.setOnClickListener(v -> startActivity(new Intent(getBaseContext(), RegistrationActivity.class)));
         login.setOnClickListener(v -> logIn());
-        passwordText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE)
-                logIn();
-            return false;
-        });
+//        passwordText.setOnEditorActionListener((v, actionId, event) -> {
+//            if (actionId == EditorInfo.IME_ACTION_DONE)
+//                logIn();
+//            return false;
+//        });
         skip.setOnClickListener(v -> StaticMembers.startActivityOverAll(this, MainActivity.class));
        /* forgetPassword.setOnClickListener((View.OnClickListener) v -> {
             //startActivity(new Intent(LogInActivity.this, ForgetPasswordActivity.class));
@@ -71,7 +71,7 @@ public class LogInActivity extends BaseActivity {
     }
 
     void logIn() {
-        if (StaticMembers.CheckTextInputEditText(emailText, emailLayout, getString(R.string.email_empty))
+        if (StaticMembers.CheckTextInputEditText(emailText, emailLayout, getString(R.string.phone_empty))
                 && StaticMembers.CheckTextInputEditText(passwordText, passwordLayout, getString(R.string.password_empty))) {
 
             progress.setVisibility(View.VISIBLE);
@@ -88,7 +88,7 @@ public class LogInActivity extends BaseActivity {
                     progress.setVisibility(View.GONE);
                     LoginResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
-                        StaticMembers.toastMessageShort(getBaseContext(), result.getMessage());
+                        StaticMembers.toastMessageShortSuccess(getBaseContext(), result.getMessage());
                         PrefManager.getInstance(getBaseContext()).setAPIToken(result.getData().getToken());
                         PrefManager.getInstance(getBaseContext()).setObject(StaticMembers.USER, result.getData().getUser());
                         if (getIntent().getBooleanExtra(StaticMembers.ACTION, false))
@@ -101,7 +101,7 @@ public class LogInActivity extends BaseActivity {
                             if (response.errorBody() != null) {
                                 errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorLoginResponse.class);
                                 if (errorLoginResponse != null) {
-                                    StaticMembers.toastMessageShort(getBaseContext(), errorLoginResponse.getMessage());
+                                    StaticMembers.toastMessageShortFailed(getBaseContext(), errorLoginResponse.getMessage());
                                 }
                             }
                         } catch (IOException e) {

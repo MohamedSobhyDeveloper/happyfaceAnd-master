@@ -29,6 +29,7 @@ import com.happyface.models.cart.CartItem;
 import com.happyface.models.cart.Data;
 import com.happyface.models.cart.GiftAdditionalItem;
 import com.happyface.models.cart.delete_cart_models.DeleteCartResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,6 +46,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
+
     private CartActivity activity;
     private RelativeLayout progress;
     private Data cartData;
@@ -107,7 +109,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                 holder.remove.setEnabled(false);
             holder.add.setOnClickListener(v -> {
                 holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount + 1));
-                changeCartItem(cartItem, amount + 1, holder.amountText);
+                changeCartItem(cartItem, amount + 1, holder.amountText,holder.avi);
                 if (amount + 1 > 1)
                     holder.remove.setEnabled(true);
             });
@@ -116,7 +118,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                     holder.remove.setEnabled(false);
                 else {
                     holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
-                    changeCartItem(cartItem, amount - 1, holder.amountText);
+                    changeCartItem(cartItem, amount - 1, holder.amountText,holder.avi);
                     if (amount - 1 < 2)
                         holder.remove.setEnabled(false);
                 }
@@ -128,7 +130,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
         }
     }
 
-    private void changeCartItem(CartItem cartItem, int amount, TextView amountText) {
+    private void changeCartItem(CartItem cartItem, int amount, TextView amountText,AVLoadingIndicatorView avi) {
         // progress.setVisibility(View.VISIBLE);
         if (PrefManager.getInstance(activity).getAPIToken().isEmpty()) {
             Intent intent = new Intent(activity, LogInActivity.class);
@@ -162,12 +164,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                 params.remove(StaticMembers.GIFT_MESSAGE_TEXT);
             else
                 params.put(StaticMembers.GIFT_MESSAGE_TEXT, cartItem.getGiftMessegsMsg());
+//            avi.setVisibility(View.VISIBLE);
             Call<AddCartResponse> call = RetrofitModel.getApi(activity)
                     .addOrEditCart(params, addIDs, addQuantities);
             call.enqueue(new CallbackRetrofit<AddCartResponse>(activity) {
                 @Override
                 public void onResponse(@NotNull Call<AddCartResponse> call, @NotNull Response<AddCartResponse> response) {
                     // progress.setVisibility(View.GONE);
+//                    avi.setVisibility(View.GONE);
                     if (!response.isSuccessful()) {
                         amountText.setText(String.format(Locale.getDefault(), "%d", amount));
                         StaticMembers.checkLoginRequired(response.errorBody(), activity);
@@ -200,7 +204,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                     if (!response.isSuccessful()) {
                         restoreItem(cartItem, position);
                         if (!response.message().isEmpty())
-                            StaticMembers.toastMessageShort(activity, response.message());
+                            StaticMembers.toastMessageShortSuccess(activity, response.message());
                         StaticMembers.checkLoginRequired(response.errorBody(), activity);
                     } else activity.getCart();
                 }
@@ -251,7 +255,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
         @BindView(R.id.totalLayout)
         LinearLayout totalLayout;
         @BindView(R.id.linear)
-        LinearLayout linear;
+        RelativeLayout linear;
         @BindView(R.id.additionalLayout)
         LinearLayout additionalLayout;
 
@@ -268,7 +272,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
         TextView editAddText;
         @BindView(R.id.editAdditional)
         CardView editAdditional;
-
+        @BindView(R.id.avi)
+        AVLoadingIndicatorView avi;
         Holder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

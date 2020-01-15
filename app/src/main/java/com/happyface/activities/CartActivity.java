@@ -155,4 +155,39 @@ public class CartActivity extends BaseActivity {
             });
         }
     }
+
+    public void getNewCart() {
+//        progress.setVisibility(View.VISIBLE);
+        if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
+            openLogin(this);
+            finish();
+        } else {
+            Call<CartResponse> call = RetrofitModel.getApi(getBaseContext()).getCart();
+            call.enqueue(new CallbackRetrofit<CartResponse>(this) {
+                @Override
+                public void onResponse(@NotNull Call<CartResponse> call, @NotNull Response<CartResponse> response) {
+//                    progress.setVisibility(View.GONE);
+                    if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                        cartData = response.body().getData();
+                        adapter.setCartData(cartData);
+                        adapter.notifyDataSetChanged();
+                        total.setText(String.format(Locale.getDefault(), getString(R.string.f_kwd), cartData.getTotal()));
+                    } else {
+                        StaticMembers.checkLoginRequired(response.errorBody(), CartActivity.this);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<CartResponse> call, @NotNull Throwable t) {
+                    super.onFailure(call, t);
+                    progress.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

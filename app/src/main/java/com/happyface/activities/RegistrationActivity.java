@@ -207,7 +207,7 @@ public class RegistrationActivity extends BaseActivity {
             final String password = passwordText.getText().toString();
             final String confirm = confirmPassword.getText().toString();
             if (!password.equals(confirm)) {
-                StaticMembers.toastMessageShort(getBaseContext(), R.string.password_doesnt_match);
+                StaticMembers.toastMessageShortFailed(getBaseContext(), this.getString(R.string.password_doesnt_match));
                 return;
             }
             progress.setVisibility(View.VISIBLE);
@@ -231,7 +231,7 @@ public class RegistrationActivity extends BaseActivity {
                     progress.setVisibility(View.GONE);
                     RegistrationResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
-                        StaticMembers.toastMessageShort(getBaseContext(), result.getMessage());
+                        StaticMembers.toastMessageShortSuccess(getBaseContext(), result.getMessage());
                         PrefManager.getInstance(getBaseContext()).setAPIToken(result.getData().getToken());
                         PrefManager.getInstance(getBaseContext()).setObject(StaticMembers.USER, result.getData().getUser());
                         StaticMembers.startActivityOverAll(RegistrationActivity.this, MainActivity.class);
@@ -241,7 +241,7 @@ public class RegistrationActivity extends BaseActivity {
                             if (response.errorBody() != null) {
                                 errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorRegistrationResponse.class);
                                 if (errorLoginResponse != null && errorLoginResponse.getMessage() != null) {
-                                    StaticMembers.toastMessageShort(getBaseContext(), errorLoginResponse.getMessage());
+                                    StaticMembers.toastMessageShortFailed(getBaseContext(), errorLoginResponse.getMessage());
                                 }
                             }
                         } catch (IOException e) {

@@ -186,7 +186,7 @@ public class ProductDetailsActivity extends BaseActivity {
                         StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext());
                     } else if (response.body() != null) {
                         startActivity(new Intent(getBaseContext(), CartActivity.class));
-                        StaticMembers.toastMessageShort(getBaseContext(), response.body().getMessage());
+                        StaticMembers.toastMessageShortSuccess(getBaseContext(), response.body().getMessage());
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount));
                     }
                 }
@@ -212,7 +212,7 @@ public class ProductDetailsActivity extends BaseActivity {
                     progress.setVisibility(View.GONE);
                     WishlistResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
-                        StaticMembers.toastMessageShort(getBaseContext(), result.getMessage());
+                        StaticMembers.toastMessageShortSuccess(getBaseContext(), result.getMessage());
                     } else {
                         favorite.setChecked(!favorite.isChecked());
                         favorite.setIcon(favorite.isChecked() ? R.drawable.fav_red : R.drawable.fav_grey);
@@ -221,7 +221,7 @@ public class ProductDetailsActivity extends BaseActivity {
                             if (response.errorBody() != null) {
                                 errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorWishListResponse.class);
                                 if (errorLoginResponse != null) {
-                                    StaticMembers.toastMessageShort(getBaseContext(), errorLoginResponse.getMessage());
+                                    StaticMembers.toastMessageShortFailed(getBaseContext(), errorLoginResponse.getMessage());
                                 }
                             }
                         } catch (IOException e) {
