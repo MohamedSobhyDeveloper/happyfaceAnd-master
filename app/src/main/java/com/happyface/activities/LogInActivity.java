@@ -71,7 +71,6 @@ public class LogInActivity extends BaseActivity {
     }
 
     void logIn() {
-
         if (StaticMembers.CheckTextInputEditText(emailText, emailLayout, getString(R.string.email_empty))
                 && StaticMembers.CheckTextInputEditText(passwordText, passwordLayout, getString(R.string.password_empty))) {
 
@@ -118,5 +117,11 @@ public class LogInActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

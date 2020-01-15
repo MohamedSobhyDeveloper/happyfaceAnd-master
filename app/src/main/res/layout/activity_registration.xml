@@ -3,19 +3,21 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="false"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_gravity="center"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 >
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/_30sdp"
                     android:src="@drawable/happy"
                     />
 
@@ -59,7 +61,6 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/phoneLayout"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -71,6 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:drawablePadding="8dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:padding="@dimen/_10sdp"
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:hint="@string/phone"
@@ -103,12 +105,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:prompt="@string/area"
+                    android:visibility="gone"
                     android:spinnerMode="dialog" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/blockLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:hintEnabled="false">
 
 
@@ -127,6 +131,7 @@
                     android:id="@+id/streetLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:hintEnabled="false">
 
 
@@ -145,6 +150,7 @@
                     android:id="@+id/avenueLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:hintEnabled="false">
 
 
@@ -163,6 +169,7 @@
                     android:id="@+id/remarkAddressLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:hintEnabled="false">
 
 
@@ -180,6 +187,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/houseNoLayout"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -202,6 +210,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/gender"
+                    android:visibility="gone"
                     android:textSize="@dimen/text_normal" />
 
                 <RadioGroup
@@ -209,6 +218,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -234,6 +244,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="@string/birthday"
+                    android:visibility="gone"
                     android:textAllCaps="false" />
 
                 <Button
@@ -242,6 +253,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:visibility="gone"
                     android:text="@string/current_location"
                     android:textAllCaps="false" />
 
@@ -261,6 +273,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:drawablePadding="8dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:hint="@string/pass"
                         android:padding="@dimen/_10sdp"
                         android:background="@drawable/roundedbuttondrawablewhite"

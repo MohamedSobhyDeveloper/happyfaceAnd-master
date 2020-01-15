@@ -61,6 +61,7 @@
     <style name="editTextStyle">
         <item name="android:textColorHint">@android:color/black</item>
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
     <style name="toolbarTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

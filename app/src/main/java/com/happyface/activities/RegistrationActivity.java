@@ -263,4 +263,9 @@ public class RegistrationActivity extends BaseActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
