@@ -22,7 +22,6 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/nameLayout"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -50,7 +49,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:visibility="gone"
                         android:drawablePadding="8dp"
                         android:hint="@string/email_here"
                         android:inputType="textEmailAddress" />
@@ -93,7 +91,6 @@
                         android:layout_gravity="center"
                         android:drawablePadding="8dp"
                         android:hint="@string/governorate"
-                        android:visibility="gone"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
 
