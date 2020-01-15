@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.activities.LogInActivity;
 import com.happyface.models.login_models.ErrorLoginResponse;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -237,15 +238,18 @@ public class StaticMembers {
     //////////////////////Toasts/////////////////////
 
     private static Toast toast;
+    private static TastyToast tastyToast;
 
-    public static void toastMessageShort(Context context, String messaage) {
+
+
+    public static void toastMessageShortSuccess(Context context, String messaage) {
         if (toast != null)
             toast.cancel();
         toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
         toast.show();
     }
 
-    public static void toastMessageShort(Context context, int messaage) {
+    public static void toastMessageShortFailed(Context context, int messaage) {
         if (toast != null)
             toast.cancel();
         toast = Toast.makeText(context, messaage, Toast.LENGTH_SHORT);
@@ -289,19 +293,19 @@ public class StaticMembers {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 0) {
-                    textInputLayout.setError(errorMessage);
+                    editText.setError(errorMessage);
                     textInputLayout.setErrorEnabled(true);
                 } else {
-                    textInputLayout.setErrorEnabled(false);
+                    editText.setError(null);
                 }
             }
         });
         if (TextUtils.isEmpty(editText.getText())) {
-            textInputLayout.setError(errorMessage);
+            editText.setError(errorMessage);
             textInputLayout.setErrorEnabled(true);
             return false;
         } else {
-            textInputLayout.setErrorEnabled(false);
+            editText.setError(null);
             return true;
         }
     }

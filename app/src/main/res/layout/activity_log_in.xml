@@ -37,7 +37,8 @@
                     android:id="@+id/emailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    >
 
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -59,13 +60,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="60dp"
-                    app:passwordToggleEnabled="true"
+                    app:hintEnabled="false"
                     >
 
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
+                        style="@style/editTextStyle"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:drawablePadding="8dp"

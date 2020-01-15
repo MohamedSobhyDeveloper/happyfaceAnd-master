@@ -76,9 +76,9 @@ public class LogInActivity extends BaseActivity {
 
             progress.setVisibility(View.VISIBLE);
             LogInSendModel sendModel = new LogInSendModel();
-            if (emailText.getText().toString().contains("@"))
-                sendModel.setEmail(emailText.getText().toString());
-            else
+//            if (emailText.getText().toString().contains("@"))
+//                sendModel.setEmail(emailText.getText().toString());
+//            else
                 sendModel.setTelephone(emailText.getText().toString());
             sendModel.setPassword(passwordText.getText().toString());
             Call<LoginResponse> call = RetrofitModel.getApi(this).login(sendModel);

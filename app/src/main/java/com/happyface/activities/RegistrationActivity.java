@@ -200,14 +200,10 @@ public class RegistrationActivity extends BaseActivity {
     String selectedArea;
 
     void register() {
-        if (StaticMembers.CheckTextInputEditText(emailText, emailLayout, getString(R.string.email_empty)) &&
-                StaticMembers.CheckTextInputEditText(nameText, nameLayout, getString(R.string.full_name_empty)) &&
-                StaticMembers.CheckTextInputEditText(phone, phoneLayout, getString(R.string.phone_empty)) &&
+        if (StaticMembers.CheckTextInputEditText(phone, phoneLayout, getString(R.string.phone_empty)) &&
                 StaticMembers.CheckTextInputEditText(passwordText, passwordLayout, getString(R.string.phone_empty)) &&
                 //StaticMembers.CheckValidationPassword(passwordText, passwordLayout, getString(R.string.password_empty), getString(R.string.password_invalid_error)) &&
                 StaticMembers.CheckTextInputEditText(confirmPassword, confirmPasswordLayout, getString(R.string.confirm_password_empty))) {
-            final String name = nameText.getText().toString();
-            final String email = emailText.getText().toString();
             final String password = passwordText.getText().toString();
             final String confirm = confirmPassword.getText().toString();
             if (!password.equals(confirm)) {
@@ -216,18 +212,18 @@ public class RegistrationActivity extends BaseActivity {
             }
             progress.setVisibility(View.VISIBLE);
             final RegistrationSendModel model =
-                    new RegistrationSendModel(name, phone.getText().toString(), email, password);
-            model.setGovernmant(gov.getText().toString());
-            model.setArea(selectedArea);
-            model.setAvenue(avenue.getText().toString());
-            model.setBlock(block.getText().toString());
-            model.setStreet(street.getText().toString());
-            model.setRemarkaddress(remarkAddress.getText().toString());
-            model.setHouse_no(houseNo.getText().toString());
-            model.setDatebirth(StaticMembers.getDate(calendar));
-            model.setLat(slat);
-            model.setLon(slong);
-            model.setGender(genderRadio.getCheckedRadioButtonId() == R.id.male ? StaticMembers.MALE : StaticMembers.FEMALE);
+                    new RegistrationSendModel("", phone.getText().toString(), "", password);
+//            model.setGovernmant(gov.getText().toString());
+//            model.setArea(selectedArea);
+//            model.setAvenue(avenue.getText().toString());
+//            model.setBlock(block.getText().toString());
+//            model.setStreet(street.getText().toString());
+//            model.setRemarkaddress(remarkAddress.getText().toString());
+//            model.setHouse_no(houseNo.getText().toString());
+//            model.setDatebirth(StaticMembers.getDate(calendar));
+//            model.setLat(slat);
+//            model.setLon(slong);
+//            model.setGender(genderRadio.getCheckedRadioButtonId() == R.id.male ? StaticMembers.MALE : StaticMembers.FEMALE);
             Call<RegistrationResponse> call = RetrofitModel.getApi(this).register(model);
             call.enqueue(new CallbackRetrofit<RegistrationResponse>(this) {
                 @Override
