@@ -247,6 +247,8 @@ public class AccountFragment extends Fragment {
             street.setText(user.getStreet());
             avenue.setText(user.getAvenue());
             name.setText(user.getName());
+            remarkAddress.setText(user.getRemarkaddress());
+            houseNo.setText(user.getHouse_no());
             name.setOnClickListener(v -> openDialog(StaticMembers.NAME, getString(R.string.name), user.getName()));
             gov.setOnClickListener(v -> openDialog(StaticMembers.GOV, getString(R.string.governorate), user.getGovernmant()));
             //area.setOnClickListener(v -> openDialog(StaticMembers.AREA, getString(R.string.area), user.getArea()));

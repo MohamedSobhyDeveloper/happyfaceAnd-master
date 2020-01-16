@@ -144,4 +144,5 @@
     <string name="no">No</string>
     <string name="choose_current_location">Choose Current Location</string>
     <string name="choose_area">Choose Area</string>
+    <string name="address_details">Address Details</string>
 </resources>

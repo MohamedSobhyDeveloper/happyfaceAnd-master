@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:padding="@dimen/_5sdp"
@@ -21,15 +22,28 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
+                tools:ignore="UselessParent">
 
-                >
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="governorate:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/govLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_gravity="center"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
-
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/gov"
@@ -42,22 +56,57 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:hint="@string/governorate"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        />
+
                 </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Area:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/area"
                     style="@style/Widget.AppCompat.Spinner.Underlined"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
                     android:layout_height="wrap_content"
                     android:background="@drawable/roundedbuttondrawablewhite"
                     android:prompt="@string/area"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:spinnerMode="dialog" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Block:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/blockLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -76,10 +125,26 @@
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Street:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/streetLayout"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -97,10 +162,26 @@
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/avenueLayout"
+                <LinearLayout
                     android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Avenue:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/avenueLayout"
+                    android:layout_width="0dp"
+                        android:layout_weight="3"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -118,10 +199,28 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/remarkAddressLayout"
+
+                <LinearLayout
                     android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Remark Address:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/remarkAddressLayout"
+                    android:layout_width="0dp"
+                        android:layout_weight="3"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -140,9 +239,28 @@
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/houseNoLayout"
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="House No:"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black"
+                        />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/houseNoLayout"
+                    android:layout_width="0dp"
+                        android:layout_weight="3"
                     android:layout_height="wrap_content"
                     app:hintEnabled="false">
 
@@ -161,6 +279,7 @@
                         android:inputType="number"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
                 <TextView
                     style="@style/editTextStyle"
