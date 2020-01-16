@@ -282,7 +282,7 @@ public class StaticMembers {
 //        toast.show();
 //    }
 
-    public static boolean CheckTextInputEditText(TextInputEditText editText, final TextInputLayout textInputLayout, final String errorMessage) {
+       public static boolean CheckTextInputEditText(TextInputEditText editText, final TextInputLayout textInputLayout, final String errorMessage) {
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -314,6 +314,39 @@ public class StaticMembers {
             return true;
         }
     }
+
+    public static boolean CheckTextInputEditText(TextInputEditText editText, final String errorMessage) {
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    editText.setError(errorMessage);
+                } else {
+                    editText.setError(null);
+                }
+            }
+        });
+        if (TextUtils.isEmpty(editText.getText())) {
+            editText.setError(errorMessage);
+            return false;
+        } else {
+            editText.setError(null);
+            return true;
+        }
+    }
+
+
 
     public static String getLanguage(Context context) {
         return PrefManager.getInstance(context).getStringData(LANGUAGE);

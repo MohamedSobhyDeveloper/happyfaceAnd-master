@@ -137,8 +137,11 @@
     <string name="title_activity_maps">Map</string>
     <string name="current_location">Current Location</string>
     <string name="current_location_s">Current Location:\n %f, %f</string>
+    <string name="current_location_ss">Current Location:\n</string>
     <string name="confirm">Confirm</string>
     <string name="want_to_exit">Do you want to exit the application?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="choose_current_location">Choose Current Location</string>
+    <string name="choose_area">Choose Area</string>
 </resources>

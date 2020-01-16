@@ -50,7 +50,6 @@
                     style="@style/Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_20sdp"
                     android:background="@drawable/roundedbuttondrawablewhite"
                     android:prompt="@string/area"
                     android:layout_marginBottom="@dimen/_5sdp"
