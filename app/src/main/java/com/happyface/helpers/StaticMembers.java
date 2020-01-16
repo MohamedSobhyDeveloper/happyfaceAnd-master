@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.activities.LogInActivity;
+import com.happyface.activities.SplashActivity;
 import com.happyface.models.login_models.ErrorLoginResponse;
 import com.sdsmdg.tastytoast.TastyToast;
 
@@ -351,7 +352,7 @@ public class StaticMembers {
         activity.startActivity(intent);
     }
 
-    public static void checkLoginRequired(ResponseBody errorBody, Context context) {
+    public static void checkLoginRequired(ResponseBody errorBody, Context context,Activity activity) {
         try {
             ErrorLoginResponse errorLoginResponse = null;
             if (errorBody != null) {
@@ -359,7 +360,10 @@ public class StaticMembers {
                 if (errorLoginResponse != null) {
                     if (errorLoginResponse.getError() != null && !errorLoginResponse.getError().isEmpty() && errorLoginResponse.getError().toLowerCase().contains("token")) {
                         PrefManager.getInstance(context).removeToken();
-                        openLogin(context);
+//                        openLogin(context);
+                        startActivityOverAll(activity, LogInActivity.class);
+
+
                     }
                 }
             }

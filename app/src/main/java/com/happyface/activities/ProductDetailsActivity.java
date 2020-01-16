@@ -184,7 +184,7 @@ public class ProductDetailsActivity extends BaseActivity {
                     progress.setVisibility(View.GONE);
                     if (!response.isSuccessful()) {
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
-                        StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext());
+                        StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(),ProductDetailsActivity.this);
                     } else if (response.body() != null) {
                         startActivity(new Intent(getBaseContext(), CartActivity.class));
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), response.body().getMessage());
@@ -228,7 +228,7 @@ public class ProductDetailsActivity extends BaseActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        StaticMembers.checkLoginRequired(response.errorBody(), ProductDetailsActivity.this);
+                        StaticMembers.checkLoginRequired(response.errorBody(), ProductDetailsActivity.this,ProductDetailsActivity.this);
 
                     }
                 }
@@ -240,5 +240,10 @@ public class ProductDetailsActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

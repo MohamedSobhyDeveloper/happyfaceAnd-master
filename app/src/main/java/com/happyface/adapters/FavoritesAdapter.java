@@ -1,5 +1,6 @@
 package com.happyface.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -42,12 +43,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
     private List<Product> list;
     private AVLoadingIndicatorView progress;
     private RecyclerView recycler;
+    private Activity activity;
 
-    public FavoritesAdapter(Context context, List<Product> list, AVLoadingIndicatorView progress, RecyclerView recycler) {
+    public FavoritesAdapter(Context context, List<Product> list, AVLoadingIndicatorView progress, RecyclerView recycler, Activity activity) {
         this.context = context;
         this.list = list;
         this.recycler = recycler;
         this.progress = progress;
+        this.activity=activity;
     }
 
     @NonNull
@@ -103,7 +106,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
                         StaticMembers.toastMessageShortSuccess(context, result.getMessage());
                     } else {
                         buttonView.setChecked(!buttonView.isChecked());
-                        StaticMembers.checkLoginRequired(response.errorBody(), context);
+                        StaticMembers.checkLoginRequired(response.errorBody(), context,activity);
                         try {
                             ErrorWishListResponse errorLoginResponse = null;
                             if (response.errorBody() != null) {

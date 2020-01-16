@@ -124,7 +124,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                 }
             });
         } else {
-            holder.totalLayout.setVisibility(View.VISIBLE);
+            holder.totalLayout.setVisibility(View.GONE);
             holder.itemLayout.setVisibility(View.GONE);
             holder.total.setText(String.format(Locale.getDefault(), activity.getString(R.string.f_kwd), cartData.getTotal()));
         }
@@ -174,7 +174,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
 //                    avi.setVisibility(View.GONE);
                     if (!response.isSuccessful()) {
                         amountText.setText(String.format(Locale.getDefault(), "%d", amount));
-                        StaticMembers.checkLoginRequired(response.errorBody(), activity);
+                        StaticMembers.checkLoginRequired(response.errorBody(), activity,activity);
                     } else activity.getCart();
                 }
 
@@ -205,7 +205,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                         restoreItem(cartItem, position);
                         if (!response.message().isEmpty())
                             StaticMembers.toastMessageShortSuccess(activity, response.message());
-                        StaticMembers.checkLoginRequired(response.errorBody(), activity);
+                        StaticMembers.checkLoginRequired(response.errorBody(), activity,activity);
                     } else activity.getCart();
                 }
 

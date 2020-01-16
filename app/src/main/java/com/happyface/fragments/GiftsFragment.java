@@ -192,7 +192,7 @@ public class GiftsFragment extends DialogFragment {
                     progress.setVisibility(View.GONE);
                     if (!response.isSuccessful()) {
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
-                        StaticMembers.checkLoginRequired(response.errorBody(), getContext());
+                        StaticMembers.checkLoginRequired(response.errorBody(), getContext(),getActivity());
                     } else if (response.body() != null) {
                        /* startActivity(new Intent(getBaseContext(), CartActivity.class));
                         StaticMembers.toastMessageShort(getBaseContext(), response.body().getMessage());*/

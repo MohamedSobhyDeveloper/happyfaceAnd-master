@@ -111,43 +111,49 @@ public class RegistrationActivity extends BaseActivity {
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
         findViewById(R.id.register).setOnClickListener(v -> register());
-        confirmPassword.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE)
-                register();
-            return false;
-        });
-        calendar = Calendar.getInstance();
-        birthdayButton.setOnClickListener(v -> {
-            DatePickerDialog datePicker = new DatePickerDialog(this, (view, year, month, dayOfMonth) ->
-            {
-                calendar.set(year, month, dayOfMonth);
-                birthdayButton.setText(String.format(Locale.getDefault(), getString(R.string.birthday_s), StaticMembers.getDate(calendar)));
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            datePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
-            datePicker.show();
-        });
+
+//        confirmPassword.setOnEditorActionListener((v, actionId, event) -> {
+//            if (actionId == EditorInfo.IME_ACTION_DONE)
+//                register();
+//            return false;
+//        });
+
+//        calendar = Calendar.getInstance();
+//        birthdayButton.setOnClickListener(v -> {
+//            DatePickerDialog datePicker = new DatePickerDialog(this, (view, year, month, dayOfMonth) ->
+//            {
+//                calendar.set(year, month, dayOfMonth);
+//                birthdayButton.setText(String.format(Locale.getDefault(), getString(R.string.birthday_s), StaticMembers.getDate(calendar)));
+//            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+//            datePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+//            datePicker.show();
+//        });
+//
         skip.setOnClickListener(v -> StaticMembers.startActivityOverAll(this, MainActivity.class));
+
         currentLocation.setOnClickListener(v -> {
             Intent intent = new Intent(this, MapsActivity.class);
             intent.putExtra(StaticMembers.LAT, slat);
             intent.putExtra(StaticMembers.LONG, slong);
             startActivityForResult(intent, StaticMembers.LOCATION_CODE);
         });
-        List<String> areas = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, areas);
-        area.setAdapter(adapter);
-        getAreas(areas, adapter);
-        area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedArea = areas.get(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+//        List<String> areas = new ArrayList<>();
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, areas);
+//        area.setAdapter(adapter);
+//        getAreas(areas, adapter);
+//        area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                selectedArea = areas.get(position);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
     }
 
     private void getAreas(List<String> list, ArrayAdapter<String> adapter) {

@@ -62,7 +62,7 @@ public class FavFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         productList = new ArrayList<>();
-        adapter = new FavoritesAdapter(getContext(), productList, progress, recycler);
+        adapter = new FavoritesAdapter(getContext(), productList, progress, recycler,getActivity());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

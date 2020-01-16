@@ -299,7 +299,7 @@ public class AccountFragment extends Fragment {
                         StaticMembers.toastMessageShortSuccess(getContext(), result.getMessage());
                     }
                 } else {
-                    StaticMembers.checkLoginRequired(response.errorBody(), getContext());
+                    StaticMembers.checkLoginRequired(response.errorBody(), getContext(),getActivity());
                 }
             }
 

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="@dimen/_5sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/govLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/gov"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:padding="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:hint="@string/governorate"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/area"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_20sdp"
+                    android:background="@drawable/roundedbuttondrawablewhite"
+                    android:prompt="@string/area"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:spinnerMode="dialog" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/blockLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/block"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/block"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/streetLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/street"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:hint="@string/street"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/avenueLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/avenue"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/avenue"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/remarkAddressLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/remarkAddress"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:hint="@string/remark_address"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/houseNoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/houseNo"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/house_no"
+                        android:padding="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:inputType="number"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    style="@style/editTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/gender"
+                    android:textSize="@dimen/text_normal" />
+
+                <RadioGroup
+                    android:id="@+id/genderRadio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/male"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/female"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/female" />
+                </RadioGroup>
+
+
+                <Button
+                    android:id="@+id/currentLocation"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/current_location"
+                    android:textAllCaps="false"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/roundedbuttondrawablewhite"
+                    />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <Button
+        android:id="@+id/savebtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/_5sdp"
+        android:textStyle="bold"
+        />
+    <Button
+        android:id="@+id/cancelbtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="@string/cancel"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/_5sdp"
+        android:textStyle="bold"
+        />
+</LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/progress_layout" />
+</RelativeLayout>

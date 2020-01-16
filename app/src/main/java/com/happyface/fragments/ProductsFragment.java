@@ -60,7 +60,7 @@ public class ProductsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         productList = new ArrayList<>();
-        adapter = new ProductsAdapter(getContext(), productList, progress);
+        adapter = new ProductsAdapter(getContext(), productList, progress,getActivity());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
