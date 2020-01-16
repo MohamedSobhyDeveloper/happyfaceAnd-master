@@ -19,6 +19,7 @@ import com.happyface.helpers.CallbackRetrofit;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.search_products.ProductsResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,8 +38,8 @@ public class ProductsFragment extends Fragment {
     RecyclerView recycler;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     ProductsAdapter adapter;

@@ -3,11 +3,9 @@ package com.happyface.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,6 +20,7 @@ import com.happyface.helpers.StaticMembers;
 import com.happyface.models.login_models.ErrorLoginResponse;
 import com.happyface.models.login_models.LogInSendModel;
 import com.happyface.models.login_models.LoginResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +41,8 @@ public class LogInActivity extends BaseActivity {
     TextInputEditText passwordText;
     @BindView(R.id.passwordLayout)
     TextInputLayout passwordLayout;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.skip)
     Button skip;
     /*
@@ -79,7 +78,7 @@ public class LogInActivity extends BaseActivity {
 //            if (emailText.getText().toString().contains("@"))
 //                sendModel.setEmail(emailText.getText().toString());
 //            else
-                sendModel.setTelephone(emailText.getText().toString());
+            sendModel.setTelephone(emailText.getText().toString());
             sendModel.setPassword(passwordText.getText().toString());
             Call<LoginResponse> call = RetrofitModel.getApi(this).login(sendModel);
             call.enqueue(new CallbackRetrofit<LoginResponse>(this) {
@@ -119,9 +118,4 @@ public class LogInActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 }

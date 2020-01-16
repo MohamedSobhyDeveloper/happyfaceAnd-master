@@ -146,6 +146,7 @@ public class StaticMembers {
         activity.finishAffinity();
     }
 
+
     public static <T extends Activity> void startActivityOverAll(Intent intent, T activity) {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);

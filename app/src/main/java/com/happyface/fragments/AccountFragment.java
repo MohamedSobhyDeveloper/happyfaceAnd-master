@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +32,7 @@ import com.happyface.models.area_models.AreaResponse;
 import com.happyface.models.area_models.DataItem;
 import com.happyface.models.login_models.EditNameResponse;
 import com.happyface.models.login_models.User;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,10 +52,11 @@ import static com.happyface.helpers.StaticMembers.AREA;
 import static com.happyface.helpers.StaticMembers.LAT_;
 import static com.happyface.helpers.StaticMembers.LON;
 import static com.happyface.helpers.StaticMembers.USER;
-import static com.happyface.helpers.StaticMembers.openLogin;
 
 public class AccountFragment extends Fragment {
 
+    @BindView(R.id.layout_profile)
+    LinearLayout layoutProfile;
     private String selectedArea;
     private double slat, slong;
 
@@ -70,8 +71,8 @@ public class AccountFragment extends Fragment {
         return v;
     }
 
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.name)
     TextView name;
     @BindView(R.id.phone)
@@ -100,7 +101,6 @@ public class AccountFragment extends Fragment {
     CardView signOut;
     @BindView(R.id.saveArea)
     CardView saveArea;
-
     private User user;
 
     @Override
@@ -108,6 +108,7 @@ public class AccountFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         updateUI();
+
         changeLang.setOnClickListener(v -> {
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
             alertDialog.setTitle(R.string.change_language);
@@ -129,21 +130,25 @@ public class AccountFragment extends Fragment {
 
             alertDialog.show();
         });
+
         signOut.setOnClickListener(v -> {
             PrefManager.getInstance(getContext()).setAPIToken("");
             PrefManager.getInstance(getContext()).setObject(USER, null);
             StaticMembers.startActivityOverAll(getActivity(), LogInActivity.class);
         });
+
         currentLocation.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MapsActivity.class);
             intent.putExtra(StaticMembers.LAT, slat);
             intent.putExtra(StaticMembers.LONG, slong);
             startActivityForResult(intent, StaticMembers.LOCATION_CODE);
         });
+
         saveArea.setOnClickListener(v -> {
             changeField(AREA, "", selectedArea);
             saveArea.setVisibility(View.GONE);
         });
+
     }
 
     @Override
@@ -161,7 +166,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void getAreas(List<String> list, ArrayAdapter<String> adapter) {
-        AreaResponse areaResponse = (AreaResponse) PrefManager.getInstance(getActivity()).getObject(StaticMembers.AREA, AreaResponse.class);
+        AreaResponse areaResponse = (AreaResponse) PrefManager.getInstance(getActivity()).getObject(AREA, AreaResponse.class);
         int selectedPos = 0;
         if (areaResponse != null) {
             list.clear();
@@ -194,7 +199,7 @@ public class AccountFragment extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                     area.setSelection(selectedPos);
-                    PrefManager.getInstance(getContext()).setObject(StaticMembers.AREA, response.body());
+                    PrefManager.getInstance(getContext()).setObject(AREA, response.body());
                 }
             }
 
@@ -227,8 +232,10 @@ public class AccountFragment extends Fragment {
     void updateUI() {
         user = (User) PrefManager.getInstance(getContext()).getObject(USER, User.class);
         if (user == null) {
-            openLogin(getContext());
+//            openLogin(getContext());
+            StaticMembers.startActivityOverAll(getActivity(), LogInActivity.class);
         } else {
+            layoutProfile.setVisibility(View.VISIBLE);
             phone.setText(user.getTelephone());
             email.setText(user.getEmail());
             gov.setText(user.getGovernmant());
@@ -285,7 +292,7 @@ public class AccountFragment extends Fragment {
                     if (result != null) {
                         if (result.isStatus()) {
                             PrefManager.getInstance(getContext()).setAPIToken(result.getData().getToken());
-                            PrefManager.getInstance(getContext()).setObject(StaticMembers.USER, result.getData().getUser());
+                            PrefManager.getInstance(getContext()).setObject(USER, result.getData().getUser());
                             updateUI();
                             saveArea.setVisibility(View.GONE);
                         }
@@ -303,4 +310,5 @@ public class AccountFragment extends Fragment {
             }
         });
     }
+
 }

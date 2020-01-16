@@ -13,12 +13,13 @@ import androidx.fragment.app.Fragment;
 
 import com.happyface.R;
 import com.happyface.helpers.StaticMembers;
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class VideoFragment extends Fragment {
 
     private String url;
     private VideoView video;
-    private RelativeLayout progress;
+    private AVLoadingIndicatorView progress;
     private boolean isPlaying, isFirst;
     private int stopPosition = 0;
     private View clicker;
@@ -51,7 +52,7 @@ public class VideoFragment extends Fragment {
         }
         video = view.findViewById(R.id.video);
         clicker = view.findViewById(R.id.clicker);
-        progress = view.findViewById(R.id.progress);
+        progress = view.findViewById(R.id.avi);
         video.setVideoPath(url);
         isPlaying = false;
         isFirst = true;

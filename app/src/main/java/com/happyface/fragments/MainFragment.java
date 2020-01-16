@@ -26,6 +26,7 @@ import com.happyface.models.category_models.DataItem;
 import com.happyface.models.slider_models.Data;
 import com.happyface.models.slider_models.SliderItem;
 import com.happyface.models.slider_models.SliderResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,8 +51,8 @@ public class MainFragment extends Fragment {
     SwipeRefreshLayout swipe;
     @BindView(R.id.pager)
     ViewPager pager;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     @BindView(R.id.indicator)
@@ -168,6 +169,7 @@ public class MainFragment extends Fragment {
             public void onResponse(@NotNull Call<CategoryResponse> call, @NotNull Response<CategoryResponse> response) {
                 if (getContext() != null) {
                     progress.setVisibility(View.GONE);
+                    swipe.setRefreshing(false);
                     if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                         list.clear();
                         list.addAll(response.body().getData());
@@ -183,6 +185,7 @@ public class MainFragment extends Fragment {
             public void onFailure(@NotNull Call<CategoryResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
                 progress.setVisibility(View.GONE);
+                swipe.setRefreshing(false);
                 noItem.setVisibility(View.GONE);
             }
         });

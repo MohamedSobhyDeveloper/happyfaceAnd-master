@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.happyface.R;
+import com.happyface.activities.LogInActivity;
 import com.happyface.adapters.FavoritesAdapter;
 import com.happyface.helpers.CallbackRetrofit;
 import com.happyface.helpers.PrefManager;
@@ -21,6 +21,7 @@ import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.search_products.ProductsResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,8 +40,8 @@ public class FavFragment extends Fragment {
     RecyclerView recycler;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     FavoritesAdapter adapter;
@@ -85,7 +86,9 @@ public class FavFragment extends Fragment {
     public void getProducts(boolean isRef) {
         progress.setVisibility(View.VISIBLE);
         if (PrefManager.getInstance(getActivity()).getAPIToken().isEmpty()) {
-            StaticMembers.openLogin(getActivity());
+//            StaticMembers.openLogin(getActivity());
+            StaticMembers.startActivityOverAll(getActivity(), LogInActivity.class);
+
         }
         noItem.setVisibility(View.GONE);
         Call<ProductsResponse> call = RetrofitModel.getApi(getActivity()).getWishList();

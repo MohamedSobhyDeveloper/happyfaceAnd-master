@@ -48,10 +48,10 @@ import retrofit2.Response;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
 
     private CartActivity activity;
-    private RelativeLayout progress;
+    private AVLoadingIndicatorView progress;
     private Data cartData;
 
-    public CartAdapter(CartActivity activity, Data cartData, RelativeLayout progress) {
+    public CartAdapter(CartActivity activity, Data cartData, AVLoadingIndicatorView progress) {
         this.activity = activity;
         this.cartData = cartData;
         this.progress = progress;

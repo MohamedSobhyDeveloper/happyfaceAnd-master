@@ -22,6 +22,7 @@ import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
 import com.happyface.models.video_models.DataItem;
 import com.happyface.models.video_models.VideoResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,8 +41,8 @@ public class VideoListFragment extends Fragment {
     RecyclerView recycler;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     VideosAdapter adapter;

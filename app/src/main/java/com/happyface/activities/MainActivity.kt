@@ -7,8 +7,10 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.google.android.material.tabs.TabLayout
 import com.happyface.R
+import com.happyface.baseactivity.BaseActivity
 import com.happyface.fragments.AccountFragment
 import com.happyface.fragments.FavFragment
 import com.happyface.fragments.MainFragment
@@ -19,7 +21,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private var isBShowing: Boolean = false
     private val CAT = "cat"
@@ -95,7 +97,22 @@ class MainActivity : AppCompatActivity() {
         if (isBShowing)
             switchToMain()
         else
-            finish()
+            MaterialStyledDialog.Builder(this)
+                    .setDescription(R.string.want_to_exit)
+                    .setPositiveText(R.string.yes)
+                    .setNegativeText(R.string.no)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setHeaderColor(R.color.colorPrimary)
+                    .withDialogAnimation(true)
+                    .withIconAnimation(true)
+                    .onPositive { dialog, which ->
+                        dialog.dismiss()
+                        android.os.Process.killProcess(android.os.Process.myPid())
+                        System.exit(1)
+                        finish()
+
+                    }.onNegative { dialog, which -> dialog.dismiss() }
+                    .show()
     }
 
     private fun switchToMain() {
@@ -126,4 +143,6 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         JCVideoPlayer.releaseAllVideos()
     }
+
+
 }

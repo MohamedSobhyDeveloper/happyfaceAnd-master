@@ -29,6 +29,7 @@ import com.happyface.models.area_models.DataItem;
 import com.happyface.models.registration_models.ErrorRegistrationResponse;
 import com.happyface.models.registration_models.RegistrationResponse;
 import com.happyface.models.registration_models.RegistrationSendModel;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -95,8 +96,8 @@ public class RegistrationActivity extends BaseActivity {
     TextInputEditText confirmPassword;
     @BindView(R.id.confirmPasswordLayout)
     TextInputLayout confirmPasswordLayout;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.skip)
     Button skip;
     @BindView(R.id.currentLocation)

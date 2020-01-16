@@ -25,6 +25,7 @@ import com.happyface.helpers.StaticMembers;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.wishlist_models.ErrorWishListResponse;
 import com.happyface.models.wishlist_models.WishlistResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,9 +40,9 @@ import retrofit2.Response;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder> {
     private Context context;
     private List<Product> list;
-    private RelativeLayout progress;
+    private AVLoadingIndicatorView progress;
 
-    public ProductsAdapter(Context context, List<Product> list, RelativeLayout progress) {
+    public ProductsAdapter(Context context, List<Product> list, AVLoadingIndicatorView progress) {
         this.context = context;
         this.list = list;
         this.progress = progress;

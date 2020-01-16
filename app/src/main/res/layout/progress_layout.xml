@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/progress"
+<com.wang.avi.AVLoadingIndicatorView android:id="@+id/avi"
+    style="@style/AVLoadingIndicatorView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:visibility="gone"
+    app:indicatorColor="@color/colorPrimary"
     android:layout_gravity="center"
-    android:visibility="gone">
+    app:indicatorName="BallPulseIndicator"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 
-
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        style="@style/AVLoadingIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:indicatorColor="@color/colorPrimary"
-        android:layout_gravity="center"
-        app:indicatorName="BallPulseIndicator"
-        android:layout_centerInParent="true"
-
-        />
-
-</RelativeLayout>

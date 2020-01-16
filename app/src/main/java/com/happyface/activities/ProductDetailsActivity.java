@@ -31,6 +31,7 @@ import com.happyface.models.search_products.ProDetails;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.wishlist_models.ErrorWishListResponse;
 import com.happyface.models.wishlist_models.WishlistResponse;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,8 +45,8 @@ import retrofit2.Response;
 
 public class ProductDetailsActivity extends BaseActivity {
 
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.pager)
     ViewPager pager;
     @BindView(R.id.addToCart)

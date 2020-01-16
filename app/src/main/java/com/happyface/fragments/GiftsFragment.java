@@ -33,6 +33,7 @@ import com.happyface.models.gifts.additional.AdditionalResponse;
 import com.happyface.models.gifts.covers.CoverResponse;
 import com.happyface.models.gifts.covers.DataItem;
 import com.happyface.models.gifts.messages.MessageInput;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -70,8 +71,8 @@ public class GiftsFragment extends DialogFragment {
     RecyclerView coversRecycler;
     @BindView(R.id.additionals)
     RecyclerView additionalsRecycler;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView progress;
     @BindView(R.id.save)
     CardView saveButton;
     private List<DataItem> covers;

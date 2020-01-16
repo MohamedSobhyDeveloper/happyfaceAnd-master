@@ -3,10 +3,8 @@ package com.happyface.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.happyface.R;
 import com.happyface.adapters.CartAdapter;
 import com.happyface.baseactivity.BaseActivity;
-import com.happyface.fragments.GiftsFragment;
 import com.happyface.helpers.CallbackRetrofit;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RecyclerItemTouchHelper;
@@ -22,6 +19,7 @@ import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
 import com.happyface.models.cart.CartResponse;
 import com.happyface.models.cart.Data;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,8 +37,8 @@ public class CartActivity extends BaseActivity {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.progress)
-    RelativeLayout progress;
+    @BindView(R.id.avi)
+    AVLoadingIndicatorView avi;
     @BindView(R.id.toolbar)
     Toolbar toolbar;/*
     @BindView(R.id.addPromo)
@@ -53,6 +51,7 @@ public class CartActivity extends BaseActivity {
     CartAdapter adapter;
     Data cartData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +60,7 @@ public class CartActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         cartData = new Data();
         cartData.setCart(new ArrayList<>());
-        adapter = new CartAdapter(this, cartData, progress);
+        adapter = new CartAdapter(this, cartData, avi);
         recycler.setAdapter(adapter);
         getCart();
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.START,
@@ -127,7 +126,7 @@ public class CartActivity extends BaseActivity {
 */
 
     public void getCart() {
-        progress.setVisibility(View.VISIBLE);
+        avi.setVisibility(View.VISIBLE);
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
             openLogin(this);
             finish();
@@ -136,7 +135,7 @@ public class CartActivity extends BaseActivity {
             call.enqueue(new CallbackRetrofit<CartResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<CartResponse> call, @NotNull Response<CartResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    avi.setVisibility(View.GONE);
                     if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                         cartData = response.body().getData();
                         adapter.setCartData(cartData);
@@ -150,7 +149,7 @@ public class CartActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<CartResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    avi.setVisibility(View.GONE);
                 }
             });
         }
@@ -180,7 +179,7 @@ public class CartActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<CartResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    avi.setVisibility(View.GONE);
                 }
             });
         }
