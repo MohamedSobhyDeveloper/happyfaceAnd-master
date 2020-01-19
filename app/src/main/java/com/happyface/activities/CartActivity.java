@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.happyface.R;
 import com.happyface.adapters.CartAdapter;
@@ -31,6 +32,7 @@ import com.happyface.models.area_models.AreaResponse;
 import com.happyface.models.area_models.DataItem;
 import com.happyface.models.cart.CartResponse;
 import com.happyface.models.cart.Data;
+import com.happyface.models.login_models.EditNameResponse;
 import com.happyface.models.login_models.User;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -38,6 +40,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -77,37 +80,18 @@ public class CartActivity extends BaseActivity {
     String currentLocationvalue="";
     User user;
     Dialog dialogview;
+    BottomSheetDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         ButterKnife.bind(this);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        cartData = new Data();
-        cartData.setCart(new ArrayList<>());
-        adapter = new CartAdapter(this, cartData, avi);
-        recycler.setAdapter(adapter);
-        user = (User) PrefManager.getInstance(this).getObject(USER, User.class);
 
-        getCart();
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.START,
-                (viewHolder, direction, position) -> {
-                    if (cartData.getCart().size() > position) adapter.deleteCartItem(position);
-                });
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler);
 
-//        checkout.setOnClickListener(v ->
-//                startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class))
-//
-//        );
+        initialize();
 
-        checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                OpenAddressDialog();
-            }
-        });
-
+        setupBottomSheet();
 
 
        /* addPromo.setOnClickListener(v -> {
@@ -126,6 +110,35 @@ public class CartActivity extends BaseActivity {
         });*/
 
     }
+
+    private void initialize() {
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        cartData = new Data();
+        cartData.setCart(new ArrayList<>());
+        adapter = new CartAdapter(this, cartData, avi);
+        recycler.setAdapter(adapter);
+        user = (User) PrefManager.getInstance(this).getObject(USER, User.class);
+
+        getCart();
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.START,
+                (viewHolder, direction, position) -> {
+
+                    if (cartData.getCart().size() > position) adapter.deleteCartItem(position);
+                });
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler);
+
+//        checkout.setOnClickListener(v ->
+//                startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class))
+//
+//        );
+
+        checkout.setOnClickListener(view -> {
+//                OpenAddressDialog();
+            dialog.show();
+        });
+
+    }
+
 /*
 
     public void setPromo(String s) {
@@ -166,6 +179,41 @@ public class CartActivity extends BaseActivity {
     }
 */
 
+
+
+    private void setupBottomSheet() {
+        @SuppressLint("InflateParams") View modalbottomsheet = getLayoutInflater().inflate(R.layout.create_modal_popup, null);
+
+        dialog = new BottomSheetDialog(this);
+        dialog.setContentView(modalbottomsheet);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+
+        TextView btn_cancel = modalbottomsheet.findViewById(R.id.tv_cancel);
+        Button btneditProfile = modalbottomsheet.findViewById(R.id.edit_profile_btn);
+        Button btnCheckout = modalbottomsheet.findViewById(R.id.checkout_btn);
+        btn_cancel.setOnClickListener(view -> dialog.hide());
+        
+        btneditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OpenAddressDialog();
+            }
+        });
+        
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CallCheckOut();
+            }
+        });
+    
+    }
+
+    private void CallCheckOut() {
+    }
+
+
     public void getCart() {
         avi.setVisibility(View.VISIBLE);
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
@@ -205,7 +253,11 @@ public class CartActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+         if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }else {
+             finish();
+         }
     }
 
     @SuppressLint({"SetTextI18n", "StringFormatMatches"})
@@ -323,7 +375,8 @@ public class CartActivity extends BaseActivity {
                         newuser.setTelephone(user.getTelephone());
                         PrefManager.getInstance(getBaseContext()).setObject(StaticMembers.USER, newuser);
 
-                        startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class));
+//                        startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class));
+                        UpdateAddressDetails(newuser);
                     }else {
                         TastyToast.makeText(CartActivity.this,getString(R.string.choose_current_location),TastyToast.LENGTH_SHORT,TastyToast.INFO);
                     }
@@ -341,6 +394,47 @@ public class CartActivity extends BaseActivity {
 
 
 //        dialogview.show();
+    }
+
+    private void UpdateAddressDetails(User user) {
+        avi.setVisibility(View.VISIBLE);
+        HashMap<String, String> params = new HashMap<>();
+        params.put(StaticMembers.GOV, user.getGovernmant());
+        params.put(StaticMembers.BLOCK, user.getBlock());
+        params.put(StaticMembers.STREET, user.getStreet());
+        params.put(StaticMembers.AVENUE, user.getAvenue());
+        params.put(StaticMembers.REMARK_ADDRESS, user.getRemarkaddress());
+        params.put(StaticMembers.HOUSE_NO, user.getHouse_no());
+        params.put(StaticMembers.AREA, user.getArea());
+        params.put(StaticMembers.LAT_, user.getLat());
+        params.put(StaticMembers.LON, user.getLon());
+
+        Call<EditNameResponse> call = RetrofitModel.getApi(this).editField(params);
+        call.enqueue(new CallbackRetrofit<EditNameResponse>(this) {
+            @Override
+            public void onResponse(@NotNull Call<EditNameResponse> call, @NotNull Response<EditNameResponse> response) {
+                avi.setVisibility(View.GONE);
+                if (response.isSuccessful()) {
+                    EditNameResponse result = response.body();
+                    if (result != null) {
+                        if (result.isStatus()) {
+                            PrefManager.getInstance(CartActivity.this).setAPIToken(result.getData().getToken());
+                            PrefManager.getInstance(CartActivity.this).setObject(USER, result.getData().getUser());
+                        }
+                        StaticMembers.toastMessageShortSuccess(CartActivity.this, result.getMessage());
+                    }
+                } else {
+                    StaticMembers.checkLoginRequired(response.errorBody(), CartActivity.this,CartActivity.this);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<EditNameResponse> call, @NotNull Throwable t) {
+                super.onFailure(call, t);
+                avi.setVisibility(View.GONE);
+            }
+        });
+
     }
 
 

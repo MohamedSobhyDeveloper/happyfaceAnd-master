@@ -97,7 +97,7 @@ public class ProductDetailsActivity extends BaseActivity {
             adapter.addFragment(videoFragment);
         }
         for (String s : product.getPhotos()) {
-            ImageFragment imageFragment = ImageFragment.getInstance(s);
+            ImageFragment imageFragment = ImageFragment.getInstance(s,product.getPhotos(),pager,this);
             adapter.addFragment(imageFragment);
         }
         pager.setAdapter(adapter);
