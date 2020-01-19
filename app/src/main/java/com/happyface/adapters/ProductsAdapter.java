@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.activities.ProductDetailsActivity;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -41,13 +42,13 @@ import retrofit2.Response;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder> {
     private Context context;
     private List<Product> list;
-    private AVLoadingIndicatorView progress;
+    private Loading loading;
     private Activity activity;
 
-    public ProductsAdapter(Context context, List<Product> list, AVLoadingIndicatorView progress,Activity activity) {
+    public ProductsAdapter(Context context, List<Product> list, Loading loading,Activity activity) {
         this.context = context;
         this.list = list;
-        this.progress = progress;
+        this.loading = loading;
         this.activity=activity;
     }
 
@@ -82,7 +83,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
     }
 
     private void changeFavorite(long id, CompoundButton buttonView) {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
             StaticMembers.openLogin(context);
         } else {
@@ -90,7 +95,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
             call.enqueue(new CallbackRetrofit<WishlistResponse>(context) {
                 @Override
                 public void onResponse(@NotNull Call<WishlistResponse> call, @NotNull Response<WishlistResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
                     WishlistResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
                         StaticMembers.toastMessageShortSuccess(context, result.getMessage());
@@ -114,7 +123,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
                 @Override
                 public void onFailure(@NotNull Call<WishlistResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
                 }
             });
         }

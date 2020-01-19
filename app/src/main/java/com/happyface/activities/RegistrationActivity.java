@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.baseactivity.BaseActivity;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -96,20 +97,21 @@ public class RegistrationActivity extends BaseActivity {
     TextInputEditText confirmPassword;
     @BindView(R.id.confirmPasswordLayout)
     TextInputLayout confirmPasswordLayout;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.skip)
     Button skip;
     @BindView(R.id.currentLocation)
     Button currentLocation;
 
     Calendar calendar;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+        loading=new Loading(this);
+
         findViewById(R.id.register).setOnClickListener(v -> register());
 
 //        confirmPassword.setOnEditorActionListener((v, actionId, event) -> {
@@ -170,7 +172,7 @@ public class RegistrationActivity extends BaseActivity {
         call.enqueue(new CallbackRetrofit<AreaResponse>(this) {
             @Override
             public void onResponse(@NotNull Call<AreaResponse> call, @NotNull Response<AreaResponse> response) {
-                progress.setVisibility(View.GONE);
+//                progress.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     list.clear();
                     for (DataItem dataItem : response.body().getData()) {
@@ -185,7 +187,7 @@ public class RegistrationActivity extends BaseActivity {
             @Override
             public void onFailure(@NotNull Call<AreaResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+//                progress.setVisibility(View.GONE);
             }
         });
     }
@@ -217,7 +219,10 @@ public class RegistrationActivity extends BaseActivity {
                 StaticMembers.toastMessageShortFailed(getBaseContext(), this.getString(R.string.password_doesnt_match));
                 return;
             }
-            progress.setVisibility(View.VISIBLE);
+            if (loading!=null){
+                loading.show();
+
+            }
             final RegistrationSendModel model =
                     new RegistrationSendModel("", phone.getText().toString(), "", password);
 //            model.setGovernmant(gov.getText().toString());
@@ -235,7 +240,10 @@ public class RegistrationActivity extends BaseActivity {
             call.enqueue(new CallbackRetrofit<RegistrationResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                     RegistrationResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), result.getMessage());
@@ -260,7 +268,10 @@ public class RegistrationActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<RegistrationResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                 }
             });
 

@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.happyface.R;
 import com.happyface.adapters.ProductsAdapter;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.search_products.ProductsResponse;
@@ -38,8 +39,7 @@ public class ProductsFragment extends Fragment {
     RecyclerView recycler;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
+
     @BindView(R.id.noItem)
     TextView noItem;
     ProductsAdapter adapter;
@@ -48,6 +48,7 @@ public class ProductsFragment extends Fragment {
     boolean reachBottom;
     private boolean isRefresh;
     HashMap<String, String> params;
+    Loading  loading;
 
     @Nullable
     @Override
@@ -59,8 +60,9 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
         productList = new ArrayList<>();
-        adapter = new ProductsAdapter(getContext(), productList, progress,getActivity());
+        adapter = new ProductsAdapter(getContext(), productList, loading,getActivity());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -82,13 +84,20 @@ public class ProductsFragment extends Fragment {
     }
 
     public void getProducts(boolean isRef) {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
         noItem.setVisibility(View.GONE);
         Call<ProductsResponse> call = RetrofitModel.getApi(getActivity()).getProducts(params);
         call.enqueue(new CallbackRetrofit<ProductsResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<ProductsResponse> call, @NotNull Response<ProductsResponse> response) {
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
                 swipe.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     maxPage = response.body().getData().getLastPage();
@@ -106,7 +115,11 @@ public class ProductsFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<ProductsResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 swipe.setRefreshing(false);
                 noItem.setVisibility(View.GONE);
             }
@@ -125,7 +138,10 @@ public class ProductsFragment extends Fragment {
             productList.clear();
         adapter.notifyDataSetChanged();
         isRefresh = true;
-        progress.setVisibility(View.GONE);
+        if (loading!=null&&loading.isShowing()){
+            loading.dismiss();
+
+        }
         swipe.setRefreshing(false);
         noItem.setVisibility(View.VISIBLE);
     }

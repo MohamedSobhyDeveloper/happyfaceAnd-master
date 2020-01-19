@@ -455,5 +455,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/progress_layout" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

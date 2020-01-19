@@ -20,6 +20,7 @@ import com.happyface.R;
 import com.happyface.adapters.CategoryAdapter;
 import com.happyface.adapters.ImageSliderAdapter;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.models.category_models.CategoryResponse;
 import com.happyface.models.category_models.DataItem;
@@ -51,8 +52,6 @@ public class MainFragment extends Fragment {
     SwipeRefreshLayout swipe;
     @BindView(R.id.pager)
     ViewPager pager;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     @BindView(R.id.indicator)
@@ -64,6 +63,7 @@ public class MainFragment extends Fragment {
     private CategoryAdapter.OnCategorySelectedListener listener;
     private Handler handler;
     private Runnable runnable;
+    Loading loading;
 
     @Override
     public void onDestroy() {
@@ -82,6 +82,7 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
         list = new ArrayList<>();
         sliderList = new ArrayList<>();
 
@@ -131,13 +132,21 @@ public class MainFragment extends Fragment {
     }
 
     void getSlider() {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
         Call<SliderResponse> call = RetrofitModel.getApi(getContext()).getSlider();
         call.enqueue(new CallbackRetrofit<SliderResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<SliderResponse> call, @NotNull Response<SliderResponse> response) {
                 if (getContext() != null) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
                     if (response.isSuccessful()) {
                         if (response.body() != null && response.body().isStatus()) {
                             Data data = response.body().getData();
@@ -154,21 +163,32 @@ public class MainFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<SliderResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
             }
         });
 
     }
 
     void getCats() {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
         noItem.setVisibility(View.GONE);
         Call<CategoryResponse> call = RetrofitModel.getApi(getActivity()).getCategories();
         call.enqueue(new CallbackRetrofit<CategoryResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<CategoryResponse> call, @NotNull Response<CategoryResponse> response) {
                 if (getContext() != null) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                     swipe.setRefreshing(false);
                     if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                         list.clear();
@@ -184,7 +204,9 @@ public class MainFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<CategoryResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+                }
                 swipe.setRefreshing(false);
                 noItem.setVisibility(View.GONE);
             }

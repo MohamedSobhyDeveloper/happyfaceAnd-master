@@ -15,6 +15,7 @@ import com.happyface.models.registration_models.RegistrationResponse;
 import com.happyface.models.registration_models.RegistrationSendModel;
 import com.happyface.models.search_products.ProductsResponse;
 import com.happyface.models.slider_models.SliderResponse;
+import com.happyface.models.storeorder.ModelStoreOrder;
 import com.happyface.models.video_models.VideoResponse;
 import com.happyface.models.wishlist_models.WishlistResponse;
 
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -93,6 +95,10 @@ public interface ApiInterface {
 
     @GET(StaticMembers.GIFT_MESSAGE)
     Call<MessageGiftResponse> getMessages();
+
+    @FormUrlEncoded
+    @POST(StaticMembers.Make_Order)
+    Call<ModelStoreOrder> storeOrder(@FieldMap HashMap<String, String> params);
 
     /*
     @GET(StaticMembers.GIFT_GET)

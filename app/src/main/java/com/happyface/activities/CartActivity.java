@@ -20,25 +20,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.adapters.CartAdapter;
 import com.happyface.baseactivity.BaseActivity;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RecyclerItemTouchHelper;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
 import com.happyface.models.area_models.AreaResponse;
 import com.happyface.models.area_models.DataItem;
+import com.happyface.models.cart.AddCartResponse;
 import com.happyface.models.cart.CartResponse;
 import com.happyface.models.cart.Data;
+import com.happyface.models.gifts.messages.MessageGiftResponse;
 import com.happyface.models.login_models.EditNameResponse;
+import com.happyface.models.login_models.ErrorLoginResponse;
 import com.happyface.models.login_models.User;
+import com.happyface.models.storeorder.ModelStoreOrder;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,8 +63,6 @@ public class CartActivity extends BaseActivity {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView avi;
     @BindView(R.id.toolbar)
     Toolbar toolbar;/*
     @BindView(R.id.addPromo)
@@ -81,6 +86,7 @@ public class CartActivity extends BaseActivity {
     User user;
     Dialog dialogview;
     BottomSheetDialog dialog;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +118,13 @@ public class CartActivity extends BaseActivity {
     }
 
     private void initialize() {
+        loading=new Loading(this);
+
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         cartData = new Data();
         cartData.setCart(new ArrayList<>());
-        adapter = new CartAdapter(this, cartData, avi);
+        adapter = new CartAdapter(this, cartData, loading);
         recycler.setAdapter(adapter);
-        user = (User) PrefManager.getInstance(this).getObject(USER, User.class);
 
         getCart();
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.START,
@@ -181,6 +188,8 @@ public class CartActivity extends BaseActivity {
 
 
 
+     //region Open Dialog View
+
     private void setupBottomSheet() {
         @SuppressLint("InflateParams") View modalbottomsheet = getLayoutInflater().inflate(R.layout.create_modal_popup, null);
 
@@ -193,75 +202,35 @@ public class CartActivity extends BaseActivity {
         Button btneditProfile = modalbottomsheet.findViewById(R.id.edit_profile_btn);
         Button btnCheckout = modalbottomsheet.findViewById(R.id.checkout_btn);
         btn_cancel.setOnClickListener(view -> dialog.hide());
-        
+
         btneditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 OpenAddressDialog();
             }
         });
-        
+
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CallCheckOut();
+                if (user.getArea()!=null&&user.getAvenue()!=null&&user.getGovernmant()!=null){
+                    CallCheckOut();
+
+                }else {
+                    StaticMembers.toastMessageShortFailed(CartActivity.this,"Check Your Address");
+
+                }
             }
         });
-    
-    }
 
-    private void CallCheckOut() {
     }
 
 
-    public void getCart() {
-        avi.setVisibility(View.VISIBLE);
-        if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
-//            openLogin(this);
-//            finish();
-            StaticMembers.startActivityOverAll(this, LogInActivity.class);
 
-        } else {
-            Call<CartResponse> call = RetrofitModel.getApi(getBaseContext()).getCart();
-            call.enqueue(new CallbackRetrofit<CartResponse>(this) {
-                @Override
-                public void onResponse(@NotNull Call<CartResponse> call, @NotNull Response<CartResponse> response) {
-                    avi.setVisibility(View.GONE);
-                    if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                        chekoutLayout.setVisibility(View.VISIBLE);
-                        cartData = response.body().getData();
-                        adapter.setCartData(cartData);
-                        adapter.notifyDataSetChanged();
-                        total.setText(String.format(Locale.getDefault(), getString(R.string.f_kwd), cartData.getTotal()));
-                        if (cartData.getTotal()==0){
-                            noItem.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        StaticMembers.checkLoginRequired(response.errorBody(), CartActivity.this, CartActivity.this);
-                    }
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<CartResponse> call, @NotNull Throwable t) {
-                    super.onFailure(call, t);
-                    avi.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
-
-
-    @Override
-    public void onBackPressed() {
-         if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }else {
-             finish();
-         }
-    }
 
     @SuppressLint({"SetTextI18n", "StringFormatMatches"})
     public void OpenAddressDialog() {
+        user = (User) PrefManager.getInstance(this).getObject(USER, User.class);
         dialogview = new Dialog(this);
         dialogview.setContentView(R.layout.popup_address);
         dialogview.setCanceledOnTouchOutside(true);
@@ -277,7 +246,9 @@ public class CartActivity extends BaseActivity {
         TextInputEditText avenue = dialogview.findViewById(R.id.avenue);
         TextInputEditText remarkAddress = dialogview.findViewById(R.id.remarkAddress);
         TextInputEditText houseNo = dialogview.findViewById(R.id.houseNo);
-         currentLocation = dialogview.findViewById(R.id.currentLocation);
+        AVLoadingIndicatorView avLoadingIndicatorView = dialogview.findViewById(R.id.avi);
+
+        currentLocation = dialogview.findViewById(R.id.currentLocation);
 //         User user=new User();
         if (user.getGovernmant()!=null){
             gov.setText(user.getGovernmant()+"");
@@ -323,7 +294,7 @@ public class CartActivity extends BaseActivity {
         area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    selectedArea = areas.get(position);
+                selectedArea = areas.get(position);
             }
 
             @Override
@@ -340,12 +311,12 @@ public class CartActivity extends BaseActivity {
 
 
 
-     currentLocation.setOnClickListener(view -> {
-         Intent intent = new Intent(CartActivity.this, MapsActivity.class);
-         intent.putExtra(StaticMembers.LAT, slat);
-         intent.putExtra(StaticMembers.LONG, slong);
-         startActivityForResult(intent, StaticMembers.LOCATION_CODE);
-     });
+        currentLocation.setOnClickListener(view -> {
+            Intent intent = new Intent(CartActivity.this, MapsActivity.class);
+            intent.putExtra(StaticMembers.LAT, slat);
+            intent.putExtra(StaticMembers.LONG, slong);
+            startActivityForResult(intent, StaticMembers.LOCATION_CODE);
+        });
 
         savebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,10 +344,9 @@ public class CartActivity extends BaseActivity {
                         newuser.setRemarkaddress(remarkAddress.getText().toString());
                         newuser.setStreet(street.getText().toString());
                         newuser.setTelephone(user.getTelephone());
-                        PrefManager.getInstance(getBaseContext()).setObject(StaticMembers.USER, newuser);
 
 //                        startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class));
-                        UpdateAddressDetails(newuser);
+                        UpdateAddressDetails(newuser,avLoadingIndicatorView);
                     }else {
                         TastyToast.makeText(CartActivity.this,getString(R.string.choose_current_location),TastyToast.LENGTH_SHORT,TastyToast.INFO);
                     }
@@ -396,7 +366,59 @@ public class CartActivity extends BaseActivity {
 //        dialogview.show();
     }
 
-    private void UpdateAddressDetails(User user) {
+
+
+    //endregion
+
+
+    //region  Call Api
+
+    public void getCart() {
+        if (loading!=null){
+            loading.show();
+        }
+        if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
+//            openLogin(this);
+//            finish();
+            StaticMembers.startActivityOverAll(this, LogInActivity.class);
+
+        } else {
+            Call<CartResponse> call = RetrofitModel.getApi(getBaseContext()).getCart();
+            call.enqueue(new CallbackRetrofit<CartResponse>(this) {
+                @Override
+                public void onResponse(@NotNull Call<CartResponse> call, @NotNull Response<CartResponse> response) {
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+                    if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                        cartData = response.body().getData();
+                        adapter.setCartData(cartData);
+                        adapter.notifyDataSetChanged();
+                        total.setText(String.format(Locale.getDefault(), getString(R.string.f_kwd), cartData.getTotal()));
+                        if (cartData.getTotal()>0){
+                            noItem.setVisibility(View.GONE);
+                            chekoutLayout.setVisibility(View.VISIBLE);
+                        }else {
+                            noItem.setVisibility(View.VISIBLE);
+                            chekoutLayout.setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<CartResponse> call, @NotNull Throwable t) {
+                    super.onFailure(call, t);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+                }
+            });
+        }
+    }
+
+    private void UpdateAddressDetails(User user,AVLoadingIndicatorView avi) {
         avi.setVisibility(View.VISIBLE);
         HashMap<String, String> params = new HashMap<>();
         params.put(StaticMembers.GOV, user.getGovernmant());
@@ -418,13 +440,27 @@ public class CartActivity extends BaseActivity {
                     EditNameResponse result = response.body();
                     if (result != null) {
                         if (result.isStatus()) {
-                            PrefManager.getInstance(CartActivity.this).setAPIToken(result.getData().getToken());
+//                            PrefManager.getInstance(CartActivity.this).setAPIToken(result.getData().getToken());
                             PrefManager.getInstance(CartActivity.this).setObject(USER, result.getData().getUser());
+//                            PrefManager.getInstance(getBaseContext()).setObject(StaticMembers.USER, user);
                         }
                         StaticMembers.toastMessageShortSuccess(CartActivity.this, result.getMessage());
+                        dialogview.dismiss();
                     }
-                } else {
-                    StaticMembers.checkLoginRequired(response.errorBody(), CartActivity.this,CartActivity.this);
+                }else {
+                    try {
+                        ErrorLoginResponse errorLoginResponse = null;
+                        if (response.errorBody()!= null) {
+                            errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorLoginResponse.class);
+                            if (errorLoginResponse != null) {
+
+                                StaticMembers.toastMessageShortFailed(CartActivity.this, errorLoginResponse.getMessage());
+
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -438,6 +474,7 @@ public class CartActivity extends BaseActivity {
     }
 
 
+
     private void getAreas(List<String> list, ArrayAdapter<String> adapter, AppCompatSpinner area) {
 //        AreaResponse areaResponse = (AreaResponse) PrefManager.getInstance(this).getObject(StaticMembers.AREA, AreaResponse.class);
 //        if (areaResponse != null) {
@@ -448,12 +485,18 @@ public class CartActivity extends BaseActivity {
 //            }
 //            adapter.notifyDataSetChanged();
 //        }
-        avi.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
         Call<AreaResponse> call = RetrofitModel.getApi(this).getAreas();
         call.enqueue(new CallbackRetrofit<AreaResponse>(this) {
             @Override
             public void onResponse(@NotNull Call<AreaResponse> call, @NotNull Response<AreaResponse> response) {
-                avi.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     list.clear();
                     for (DataItem dataItem : response.body().getData()) {
@@ -477,10 +520,61 @@ public class CartActivity extends BaseActivity {
             @Override
             public void onFailure(@NotNull Call<AreaResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                avi.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
             }
         });
     }
+
+
+    private void CallCheckOut() {
+
+        if (loading!=null){
+            loading.show();
+
+        }
+        HashMap<String, String> params = new HashMap<>();
+        params.put("code", "0");
+        params.put("vip", "0");
+
+        Call<ModelStoreOrder> call = RetrofitModel.getApi(this).storeOrder(params);
+        call.enqueue(new CallbackRetrofit<ModelStoreOrder>(this) {
+            @Override
+            public void onResponse(@NotNull Call<ModelStoreOrder> call, @NotNull Response<ModelStoreOrder> response) {
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+                if (response.isSuccessful()) {
+                    ModelStoreOrder result = response.body();
+                    if (result != null) {
+                        if (result.getStatus()) {
+                            StaticMembers.toastMessageShortSuccess(CartActivity.this, result.getMessage());
+                            StaticMembers.startActivityOverAll(CartActivity.this,ConfirmBillActivity.class);
+                            finish();
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ModelStoreOrder> call, @NotNull Throwable t) {
+                super.onFailure(call, t);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+            }
+        });
+    }
+
+
+
+    //endregion
+
 
 
 
@@ -496,4 +590,17 @@ public class CartActivity extends BaseActivity {
             }
         }
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }else {
+            finish();
+        }
+    }
+
+
 }

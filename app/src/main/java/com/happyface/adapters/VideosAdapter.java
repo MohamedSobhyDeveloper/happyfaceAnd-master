@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.happyface.R;
 import com.happyface.activities.FullScreenVideoActivity;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.StaticMembers;
 import com.happyface.models.video_models.DataItem;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -27,12 +28,12 @@ import butterknife.ButterKnife;
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.Holder> {
     private Context context;
     private List<DataItem> list;
-    private AVLoadingIndicatorView progress;
+    private Loading loading;
 
-    public VideosAdapter(Context context, List<DataItem> list, AVLoadingIndicatorView progress) {
+    public VideosAdapter(Context context, List<DataItem> list, Loading loading) {
         this.context = context;
         this.list = list;
-        this.progress = progress;
+        this.loading = loading;
     }
 
     @NonNull

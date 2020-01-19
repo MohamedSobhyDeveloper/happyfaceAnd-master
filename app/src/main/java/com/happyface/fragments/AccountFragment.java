@@ -25,6 +25,7 @@ import com.happyface.activities.LogInActivity;
 import com.happyface.activities.MapsActivity;
 import com.happyface.activities.SplashActivity;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -59,6 +60,7 @@ public class AccountFragment extends Fragment {
     LinearLayout layoutProfile;
     private String selectedArea;
     private double slat, slong;
+    Loading loading;
 
     public static AccountFragment getInstance() {
         return new AccountFragment();
@@ -70,9 +72,6 @@ public class AccountFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
         return v;
     }
-
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.name)
     TextView name;
     @BindView(R.id.phone)
@@ -107,6 +106,8 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
+
         updateUI();
 
         changeLang.setOnClickListener(v -> {
@@ -185,7 +186,11 @@ public class AccountFragment extends Fragment {
         call.enqueue(new CallbackRetrofit<AreaResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<AreaResponse> call, @NotNull Response<AreaResponse> response) {
-                progress.setVisibility(View.GONE);
+//                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
                 int selectedPos = 0;
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     list.clear();
@@ -206,7 +211,10 @@ public class AccountFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<AreaResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
             }
         });
     }
@@ -281,34 +289,44 @@ public class AccountFragment extends Fragment {
             if (defaultVal.equals(s))
                 return;
 
-        progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
         HashMap<String, String> params = new HashMap<>();
         params.put(key, s);
         Call<EditNameResponse> call = RetrofitModel.getApi(getContext()).editField(params);
         call.enqueue(new CallbackRetrofit<EditNameResponse>(getContext()) {
             @Override
             public void onResponse(@NotNull Call<EditNameResponse> call, @NotNull Response<EditNameResponse> response) {
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
                 if (response.isSuccessful()) {
                     EditNameResponse result = response.body();
                     if (result != null) {
                         if (result.isStatus()) {
-                            PrefManager.getInstance(getContext()).setAPIToken(result.getData().getToken());
+//                            PrefManager.getInstance(getContext()).setAPIToken(result.getData().getToken());
                             PrefManager.getInstance(getContext()).setObject(USER, result.getData().getUser());
                             updateUI();
                             saveArea.setVisibility(View.GONE);
                         }
                         StaticMembers.toastMessageShortSuccess(getContext(), result.getMessage());
                     }
-                } else {
-                    StaticMembers.checkLoginRequired(response.errorBody(), getContext(),getActivity());
                 }
+//                else {
+//                    StaticMembers.checkLoginRequired(response.errorBody(), getContext(),getActivity());
+//                }
             }
 
             @Override
             public void onFailure(@NotNull Call<EditNameResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
             }
         });
     }

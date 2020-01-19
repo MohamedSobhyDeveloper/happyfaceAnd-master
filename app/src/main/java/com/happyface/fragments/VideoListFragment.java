@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.happyface.R;
 import com.happyface.adapters.VideosAdapter;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -41,8 +42,6 @@ public class VideoListFragment extends Fragment {
     RecyclerView recycler;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     VideosAdapter adapter;
@@ -51,6 +50,7 @@ public class VideoListFragment extends Fragment {
     boolean reachBottom;
     private boolean isRefresh;
     HashMap<String, String> params;
+    Loading  loading;
 
     @Nullable
     @Override
@@ -62,8 +62,9 @@ public class VideoListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
         productList = new ArrayList<>();
-        adapter = new VideosAdapter(getContext(), productList, progress);
+        adapter = new VideosAdapter(getContext(), productList, loading);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -86,13 +87,20 @@ public class VideoListFragment extends Fragment {
     }
 
     public void getVideos(boolean isRef) {
-        progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
         noItem.setVisibility(View.GONE);
         Call<VideoResponse> call = RetrofitModel.getApi(getActivity()).getVideoList();
         call.enqueue(new CallbackRetrofit<VideoResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<VideoResponse> call, @NotNull Response<VideoResponse> response) {
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 swipe.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     maxPage = response.body().getData().getLastPage();
@@ -110,7 +118,11 @@ public class VideoListFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<VideoResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 swipe.setRefreshing(false);
                 noItem.setVisibility(View.GONE);
             }

@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.activities.ProductDetailsActivity;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -41,15 +42,15 @@ import retrofit2.Response;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Holder> {
     private Context context;
     private List<Product> list;
-    private AVLoadingIndicatorView progress;
+    private Loading loading;
     private RecyclerView recycler;
     private Activity activity;
 
-    public FavoritesAdapter(Context context, List<Product> list, AVLoadingIndicatorView progress, RecyclerView recycler, Activity activity) {
+    public FavoritesAdapter(Context context, List<Product> list, Loading loading, RecyclerView recycler, Activity activity) {
         this.context = context;
         this.list = list;
         this.recycler = recycler;
-        this.progress = progress;
+        this.loading = loading;
         this.activity=activity;
     }
 
@@ -89,7 +90,10 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
     }
 
     private void changeFavorite(int position, long id, CompoundButton buttonView) {
-        progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
             StaticMembers.openLogin(context);
         } else {
@@ -97,7 +101,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
             call.enqueue(new CallbackRetrofit<WishlistResponse>(context) {
                 @Override
                 public void onResponse(@NotNull Call<WishlistResponse> call, @NotNull Response<WishlistResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
+
                     WishlistResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
                         if (!result.getData().isWishlist()) {
@@ -124,7 +133,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
                 @Override
                 public void onFailure(@NotNull Call<WishlistResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
                 }
             });
         }

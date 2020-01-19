@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.happyface.R;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.StaticMembers;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -19,7 +20,7 @@ public class VideoFragment extends Fragment {
 
     private String url;
     private VideoView video;
-    private AVLoadingIndicatorView progress;
+    private Loading loading;
     private boolean isPlaying, isFirst;
     private int stopPosition = 0;
     private View clicker;
@@ -52,12 +53,17 @@ public class VideoFragment extends Fragment {
         }
         video = view.findViewById(R.id.video);
         clicker = view.findViewById(R.id.clicker);
-        progress = view.findViewById(R.id.avi);
+        loading = new Loading(getActivity());
         video.setVideoPath(url);
         isPlaying = false;
         isFirst = true;
         video.setOnPreparedListener(mp -> {
-            progress.setVisibility(View.GONE);
+            if (loading!=null&&loading.isShowing()){
+                loading.dismiss();
+
+            }
+
+
             if (isPlaying) {
                 video.seekTo(stopPosition);
                 video.postDelayed(() -> video.start(), 200);
@@ -66,9 +72,17 @@ public class VideoFragment extends Fragment {
         });
         resumeVideo();
         clicker.setOnClickListener(v -> {
-            progress.setVisibility(View.VISIBLE);
+
+            if (loading!=null){
+                loading.show();
+
+            }
             if (isPlaying) {
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 pauseVideo();
             } else
                 video.resume();
@@ -91,7 +105,10 @@ public class VideoFragment extends Fragment {
 
     public void resumeVideo() {
         if (video != null) {
-            progress.setVisibility(View.VISIBLE);
+            if (loading!=null){
+                loading.show();
+
+            }
             isPlaying = true;
             video.resume();
         }

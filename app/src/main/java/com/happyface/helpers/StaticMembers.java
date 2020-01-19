@@ -58,6 +58,7 @@ public class StaticMembers {
     public static final String AMOUNT = "amount";
     public static final String CART = "cart";
     public static final String EDIT_CART = "cart/store";
+    public static final String Make_Order = "orders/store";
     public static final String QUANTITY = "quantity";
     public static final String PRODUCT_ID = "product_id";
     public static final String DELETE_CART = "cart/delete/{id}";

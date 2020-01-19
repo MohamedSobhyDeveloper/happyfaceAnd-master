@@ -21,6 +21,7 @@ import com.happyface.activities.CartActivity;
 import com.happyface.activities.LogInActivity;
 import com.happyface.fragments.GiftsFragment;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -48,13 +49,13 @@ import retrofit2.Response;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
 
     private CartActivity activity;
-    private AVLoadingIndicatorView progress;
+    private Loading loading;
     private Data cartData;
 
-    public CartAdapter(CartActivity activity, Data cartData, AVLoadingIndicatorView progress) {
+    public CartAdapter(CartActivity activity, Data cartData, Loading loading) {
         this.activity = activity;
         this.cartData = cartData;
-        this.progress = progress;
+        this.loading = loading;
     }
 
     void changeTotal(double total) {

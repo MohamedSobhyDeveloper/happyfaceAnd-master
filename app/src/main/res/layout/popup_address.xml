@@ -280,38 +280,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
-                <TextView
-                    style="@style/editTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/gender"
-                    android:textSize="@dimen/text_normal" />
-
-                <RadioGroup
-                    android:id="@+id/genderRadio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/male"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="@string/male" />
-
-                    <RadioButton
-                        android:id="@+id/female"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/female" />
-                </RadioGroup>
-
 
                 <Button
                     android:id="@+id/currentLocation"
@@ -367,5 +335,9 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/progress_layout" />
+    <include layout="@layout/progress_layout"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        />
 </RelativeLayout>

@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.baseactivity.BaseActivity;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -41,10 +42,9 @@ public class LogInActivity extends BaseActivity {
     TextInputEditText passwordText;
     @BindView(R.id.passwordLayout)
     TextInputLayout passwordLayout;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.skip)
     Button skip;
+    Loading loading;
     /*
     @BindView(R.id.forgetPassword)
     Button forgetPassword;*/
@@ -54,6 +54,7 @@ public class LogInActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
+        loading=new Loading(this);
         final CardView login = findViewById(R.id.login);
         final CardView register = findViewById(R.id.register);
         register.setOnClickListener(v -> startActivity(new Intent(getBaseContext(), RegistrationActivity.class)));
@@ -73,7 +74,10 @@ public class LogInActivity extends BaseActivity {
         if (StaticMembers.CheckTextInputEditText(emailText, emailLayout, getString(R.string.phone_empty))
                 && StaticMembers.CheckTextInputEditText(passwordText, passwordLayout, getString(R.string.password_empty))) {
 
-            progress.setVisibility(View.VISIBLE);
+            if (loading!=null){
+                loading.show();
+
+            }
             LogInSendModel sendModel = new LogInSendModel();
 //            if (emailText.getText().toString().contains("@"))
 //                sendModel.setEmail(emailText.getText().toString());
@@ -84,7 +88,10 @@ public class LogInActivity extends BaseActivity {
             call.enqueue(new CallbackRetrofit<LoginResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                     LoginResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), result.getMessage());
@@ -112,7 +119,10 @@ public class LogInActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                 }
             });
         }

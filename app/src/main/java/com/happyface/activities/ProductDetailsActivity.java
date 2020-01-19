@@ -23,6 +23,7 @@ import com.happyface.baseactivity.BaseActivity;
 import com.happyface.fragments.ImageFragment;
 import com.happyface.fragments.VideoFragment;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -45,8 +46,6 @@ import retrofit2.Response;
 
 public class ProductDetailsActivity extends BaseActivity {
 
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.pager)
     ViewPager pager;
     @BindView(R.id.addToCart)
@@ -83,13 +82,14 @@ public class ProductDetailsActivity extends BaseActivity {
     VideoFragment videoFragment;
     ProDetails proDetails;
     private MenuItem favorite;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
         ButterKnife.bind(this);
-
+      loading=new Loading(this);
         product = (Product) getIntent().getSerializableExtra(StaticMembers.PRODUCT);
         adapter = new ProductImagesAdapter(getSupportFragmentManager());
         if (product.getVideo() != null) {
@@ -171,6 +171,11 @@ public class ProductDetailsActivity extends BaseActivity {
 
     private void changeCartItem() {
         // progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
+
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
             Intent intent = new Intent(getBaseContext(), LogInActivity.class);
             intent.putExtra(StaticMembers.ACTION, true);
@@ -181,7 +186,10 @@ public class ProductDetailsActivity extends BaseActivity {
             call.enqueue(new CallbackRetrofit<AddCartResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<AddCartResponse> call, @NotNull Response<AddCartResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                     if (!response.isSuccessful()) {
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
                         StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(),ProductDetailsActivity.this);
@@ -195,7 +203,10 @@ public class ProductDetailsActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<AddCartResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                 }
             });
         }
@@ -203,6 +214,10 @@ public class ProductDetailsActivity extends BaseActivity {
 
     private void changeFavorite() {
         //progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
             StaticMembers.openLogin(this);
         } else {
@@ -210,7 +225,10 @@ public class ProductDetailsActivity extends BaseActivity {
             call.enqueue(new CallbackRetrofit<WishlistResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<WishlistResponse> call, @NotNull Response<WishlistResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                     WishlistResponse result = response.body();
                     if (response.isSuccessful() && result != null) {
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), result.getMessage());
@@ -236,7 +254,10 @@ public class ProductDetailsActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<WishlistResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
                 }
             });
         }

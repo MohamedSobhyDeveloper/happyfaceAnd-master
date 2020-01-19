@@ -32,5 +32,4 @@
         android:text="@string/no_items_found"
         android:visibility="gone" />
 
-    <include layout="@layout/progress_layout" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

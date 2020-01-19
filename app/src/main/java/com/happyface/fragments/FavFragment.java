@@ -16,6 +16,7 @@ import com.happyface.R;
 import com.happyface.activities.LogInActivity;
 import com.happyface.adapters.FavoritesAdapter;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -40,8 +41,6 @@ public class FavFragment extends Fragment {
     RecyclerView recycler;
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipe;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.noItem)
     TextView noItem;
     FavoritesAdapter adapter;
@@ -50,6 +49,7 @@ public class FavFragment extends Fragment {
     boolean reachBottom;
     private boolean isRefresh;
     HashMap<String, String> params;
+    Loading loading;
 
     @Nullable
     @Override
@@ -61,8 +61,9 @@ public class FavFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
         productList = new ArrayList<>();
-        adapter = new FavoritesAdapter(getContext(), productList, progress, recycler,getActivity());
+        adapter = new FavoritesAdapter(getContext(), productList, loading, recycler,getActivity());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -84,7 +85,10 @@ public class FavFragment extends Fragment {
     }
 
     public void getProducts(boolean isRef) {
-        progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
         if (PrefManager.getInstance(getActivity()).getAPIToken().isEmpty()) {
 //            StaticMembers.openLogin(getActivity());
             StaticMembers.startActivityOverAll(getActivity(), LogInActivity.class);
@@ -95,7 +99,11 @@ public class FavFragment extends Fragment {
         call.enqueue(new CallbackRetrofit<ProductsResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<ProductsResponse> call, @NotNull Response<ProductsResponse> response) {
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 swipe.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     maxPage = response.body().getData().getLastPage();
@@ -113,7 +121,11 @@ public class FavFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<ProductsResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 swipe.setRefreshing(false);
                 noItem.setVisibility(View.GONE);
             }

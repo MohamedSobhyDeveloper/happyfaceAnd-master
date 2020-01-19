@@ -4,6 +4,7 @@ import android.content.Context;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -20,6 +21,12 @@ public class RetrofitModel {
     private static ApiInterface getAPI(Context context) {
         Retrofit retrofit;
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
+
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(interceptor);
+
         builder.addInterceptor(chain -> {
             Request.Builder requestBuilder = chain.request().newBuilder();
             requestBuilder.addHeader("lang", StaticMembers.getLanguage(context)).build();

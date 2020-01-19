@@ -23,6 +23,7 @@ import com.happyface.activities.LogInActivity;
 import com.happyface.adapters.AdditionsAdapter;
 import com.happyface.adapters.CoversAdapter;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
@@ -71,8 +72,6 @@ public class GiftsFragment extends DialogFragment {
     RecyclerView coversRecycler;
     @BindView(R.id.additionals)
     RecyclerView additionalsRecycler;
-    @BindView(R.id.avi)
-    AVLoadingIndicatorView progress;
     @BindView(R.id.save)
     CardView saveButton;
     private List<DataItem> covers;
@@ -81,11 +80,13 @@ public class GiftsFragment extends DialogFragment {
     private AdditionsAdapter additionsAdapter;
     private MessageInput messageInput;
     private HashMap<String, String> params;
+    Loading loading;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
         if (savedInstanceState != null)
             product = (CartItem) savedInstanceState.getSerializable(StaticMembers.PRODUCT);
         if (product != null) {
@@ -170,7 +171,11 @@ public class GiftsFragment extends DialogFragment {
 
 
     private void changeCartItem() {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
         if (PrefManager.getInstance(getContext()).getAPIToken().isEmpty()) {
             Intent intent = new Intent(getContext(), LogInActivity.class);
             intent.putExtra(StaticMembers.ACTION, true);
@@ -189,7 +194,11 @@ public class GiftsFragment extends DialogFragment {
             call.enqueue(new CallbackRetrofit<AddCartResponse>(getActivity()) {
                 @Override
                 public void onResponse(@NotNull Call<AddCartResponse> call, @NotNull Response<AddCartResponse> response) {
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
                     if (!response.isSuccessful()) {
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
                         StaticMembers.checkLoginRequired(response.errorBody(), getContext(),getActivity());
@@ -205,19 +214,32 @@ public class GiftsFragment extends DialogFragment {
                 @Override
                 public void onFailure(@NotNull Call<AddCartResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    progress.setVisibility(View.GONE);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+
                 }
             });
         }
     }
 
     void getCovers() {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
+
         Call<CoverResponse> call = RetrofitModel.getApi(getActivity()).getCovers();
         call.enqueue(new CallbackRetrofit<CoverResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<CoverResponse> call, @NotNull Response<CoverResponse> response) {
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     covers.clear();
                     covers.addAll(response.body().getData());
@@ -243,20 +265,31 @@ public class GiftsFragment extends DialogFragment {
             @Override
             public void onFailure(@NotNull Call<CoverResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
             }
         });
 
     }
 
     void getAdditions() {
-        progress.setVisibility(View.VISIBLE);
+
+        if (loading!=null){
+            loading.show();
+
+        }
         Call<AdditionalResponse> call = RetrofitModel.getApi(getActivity()).getAdditions();
         call.enqueue(new CallbackRetrofit<AdditionalResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<AdditionalResponse> call, @NotNull Response<AdditionalResponse> response) {
-                progress.setVisibility(View.GONE);
-                if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
+                              if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     additionals.clear();
                     additionals.addAll(response.body().getData());
                     float total = 0;
@@ -280,7 +313,11 @@ public class GiftsFragment extends DialogFragment {
             @Override
             public void onFailure(@NotNull Call<AdditionalResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                progress.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+
+                }
+
             }
         });
 
