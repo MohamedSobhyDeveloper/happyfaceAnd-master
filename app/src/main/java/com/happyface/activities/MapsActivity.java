@@ -102,6 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mLocationPermissionGranted = true;
                     getCurrentLocation();
                 } else {
+                    gpsTracker = new GPSTracker(this);
                     gpsTracker.showSettingsAlert();
                 }
             }

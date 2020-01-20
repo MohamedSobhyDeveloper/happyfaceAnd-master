@@ -3,6 +3,7 @@ package com.happyface.helpers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -359,14 +360,22 @@ public class StaticMembers {
 
     public static void changeLocale(Context context, String langStr) {
         setLanguage(context, langStr);
-        Resources res = context.getResources();
+//        Resources res = context.getResources();
         // Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(langStr.toLowerCase()));
-        res.updateConfiguration(conf, dm);
-        Locale locale = context.getResources().getConfiguration().locale;
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        android.content.res.Configuration conf = res.getConfiguration();
+//        conf.setLocale(new Locale(langStr.toLowerCase()));
+//        res.updateConfiguration(conf, dm);
+//        Locale locale = context.getResources().getConfiguration().locale;
+//        Locale.setDefault(locale);
+
+        Locale locale = new Locale(langStr);
         Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+
+
     }
 
     public static String getDate() {

@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.happyface.R;
 import com.happyface.activities.LogInActivity;
+import com.happyface.activities.MainActivity;
 import com.happyface.activities.MapsActivity;
 import com.happyface.activities.SplashActivity;
 import com.happyface.helpers.CallbackRetrofit;
@@ -119,10 +120,10 @@ public class AccountFragment extends Fragment {
                         if (adapter.getItem(which) != null)
                             if (adapter.getItem(which).equals("English") && !StaticMembers.getLanguage(getContext()).equals("en")) {
                                 StaticMembers.changeLocale(getContext(), "en");
-                                StaticMembers.startActivityOverAll(getActivity(), SplashActivity.class);
+                                StaticMembers.startActivityOverAll(getActivity(), MainActivity.class);
                             } else if (!StaticMembers.getLanguage(getContext()).equals("ar")) {
                                 StaticMembers.changeLocale(getContext(), "ar");
-                                StaticMembers.startActivityOverAll(getActivity(), SplashActivity.class);
+                                StaticMembers.startActivityOverAll(getActivity(), MainActivity.class);
                             }
 
                     });

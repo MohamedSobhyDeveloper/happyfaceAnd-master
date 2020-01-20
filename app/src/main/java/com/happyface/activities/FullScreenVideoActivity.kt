@@ -7,13 +7,14 @@ import android.view.View.VISIBLE
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.happyface.R
+import com.happyface.baseactivity.BaseActivity
 import com.happyface.helpers.StaticMembers
 import com.happyface.models.video_models.DataItem
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
 import kotlinx.android.synthetic.main.activity_full_screen_video.*
 
 
-class FullScreenVideoActivity : AppCompatActivity() {
+class FullScreenVideoActivity : BaseActivity() {
     private lateinit var video: DataItem
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,5 +38,9 @@ class FullScreenVideoActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         videoPlayer.onStatePause()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

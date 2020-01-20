@@ -122,6 +122,8 @@ class MainActivity : BaseActivity() {
         containerProducts.visibility = GONE
         params.remove(CATEGORY_ID)
         productsFragment.removeProducts()
+        tabLayout.getTabAt(0)?.select();
+
     }
 
     private fun switchToProducts() {

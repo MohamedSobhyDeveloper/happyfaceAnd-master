@@ -1,6 +1,7 @@
 package com.happyface.baseactivity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -8,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.happyface.R;
+import com.happyface.helpers.StaticMembers;
+
+import java.util.Locale;
 
 
 @SuppressLint("Registered")
@@ -19,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
 
         Log.e("CurrentScreen", this.getClass().getSimpleName());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        setuplanguages();
 
     }
 
@@ -42,6 +47,26 @@ public class BaseActivity extends AppCompatActivity {
 
                 }).onNegative((dialog, which) -> dialog.dismiss())
                 .show();
+    }
+
+
+
+    private void setuplanguages() {
+        String language = StaticMembers.getLanguage(this);
+        Log.e("mmmm", language);
+        if (language.equals("ar")) {
+            Locale locale = new Locale("ar");
+            Locale.setDefault(locale);
+            Configuration configuration = new Configuration();
+            configuration.locale = locale;
+            getBaseContext().getResources().updateConfiguration(configuration, getBaseContext().getResources().getDisplayMetrics());
+        } else {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration configuration = new Configuration();
+            configuration.locale = locale;
+            getBaseContext().getResources().updateConfiguration(configuration, getBaseContext().getResources().getDisplayMetrics());
+        }
     }
 
 }
