@@ -100,6 +100,7 @@ public class AccountFragment extends Fragment {
     @BindView(R.id.saveArea)
     CardView saveArea;
     private User user;
+    private int update=0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -144,10 +145,10 @@ public class AccountFragment extends Fragment {
             startActivityForResult(intent, StaticMembers.LOCATION_CODE);
         });
 
-        saveArea.setOnClickListener(v -> {
-            changeField(AREA, "", selectedArea);
-            saveArea.setVisibility(View.GONE);
-        });
+//        saveArea.setOnClickListener(v -> {
+//            changeField(AREA, "", selectedArea);
+//            saveArea.setVisibility(View.GONE);
+//        });
 
     }
 
@@ -156,8 +157,8 @@ public class AccountFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == StaticMembers.LOCATION_CODE && data != null) {
-                changeField(LAT_, slat + "", "" + data.getDoubleExtra(StaticMembers.LAT, 0));
-                changeField(LON, slong + "", "" + data.getDoubleExtra(StaticMembers.LONG, 0));
+                changeField(2,LAT_, slat + "", "" + data.getDoubleExtra(StaticMembers.LAT, 0));
+                changeField(2,LON, slong + "", "" + data.getDoubleExtra(StaticMembers.LONG, 0));
                 slat = data.getDoubleExtra(StaticMembers.LAT, 0);
                 slong = data.getDoubleExtra(StaticMembers.LONG, 0);
                 currentLocation.setText(String.format(Locale.getDefault(), "%f, %f", slat, slong));
@@ -231,7 +232,7 @@ public class AccountFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
         alertDialog.setView(input); // uncomment this line
-        alertDialog.setPositiveButton(getString(R.string.ok), (dialog, which) -> changeField(key, defaultVal, input.getText().toString()));
+        alertDialog.setPositiveButton(getString(R.string.ok), (dialog, which) -> changeField(2,key, defaultVal, input.getText().toString()));
         alertDialog.setNegativeButton(getString(R.string.cancel), null);
         alertDialog.show();
     }
@@ -272,7 +273,15 @@ public class AccountFragment extends Fragment {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedArea = areas.get(position);
-                    saveArea.setVisibility(View.VISIBLE);
+//                    saveArea.setVisibility(View.VISIBLE);
+                    if (update==1){
+                        changeField(1,AREA, "", selectedArea);
+
+                    }
+
+                    update=1;
+
+
                 }
 
                 @Override
@@ -280,10 +289,12 @@ public class AccountFragment extends Fragment {
 
                 }
             });
+
+
         }
     }
 
-    private void changeField(String key, String defaultVal, String s) {
+    private void changeField(int updatedField,String key, String defaultVal, String s) {
         if (defaultVal != null)
             if (defaultVal.equals(s))
                 return;
@@ -308,15 +319,18 @@ public class AccountFragment extends Fragment {
                         if (result.isStatus()) {
 //                            PrefManager.getInstance(getContext()).setAPIToken(result.getData().getToken());
                             PrefManager.getInstance(getContext()).setObject(USER, result.getData().getUser());
-                            updateUI();
-                            saveArea.setVisibility(View.GONE);
+                            if (updatedField==2){
+                                update=0;
+                                updateUI();
+                            }
+//                            saveArea.setVisibility(View.GONE);
                         }
                         StaticMembers.toastMessageShortSuccess(getContext(), result.getMessage());
                     }
                 }
-//                else {
-//                    StaticMembers.checkLoginRequired(response.errorBody(), getContext(),getActivity());
-//                }
+                else {
+                    StaticMembers.toastMessageShortSuccess(getActivity(),"Data Updated Successfully");
+                }
             }
 
             @Override

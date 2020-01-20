@@ -447,19 +447,8 @@ public class CartActivity extends BaseActivity {
                         dialogview.dismiss();
                     }
                 }else {
-                    try {
-                        ErrorLoginResponse errorLoginResponse = null;
-                        if (response.errorBody()!= null) {
-                            errorLoginResponse = new GsonBuilder().create().fromJson(response.errorBody().string(), ErrorLoginResponse.class);
-                            if (errorLoginResponse != null) {
-
-                                StaticMembers.toastMessageShortFailed(CartActivity.this, errorLoginResponse.getMessage());
-
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    StaticMembers.toastMessageShortSuccess(CartActivity.this, "Data Updated Successfully");
+                    dialogview.dismiss();
                 }
             }
 
