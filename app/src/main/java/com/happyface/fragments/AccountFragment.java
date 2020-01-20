@@ -78,8 +78,6 @@ public class AccountFragment extends Fragment {
     TextView phone;
     @BindView(R.id.email)
     TextView email;
-    @BindView(R.id.gov)
-    TextView gov;
     @BindView(R.id.area)
     AppCompatSpinner area;
     @BindView(R.id.block)
@@ -220,7 +218,7 @@ public class AccountFragment extends Fragment {
     }
 
 
-    void openDialog(String key, String nameDisplay, String defaultVal) {
+    private void openDialog(String key, String nameDisplay, String defaultVal) {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         final EditText input = new EditText(getActivity());
         alertDialog.setTitle(String.format(Locale.getDefault(), getString(R.string.edit_s), nameDisplay));
@@ -237,7 +235,7 @@ public class AccountFragment extends Fragment {
         alertDialog.show();
     }
 
-    void updateUI() {
+    private void updateUI() {
         user = (User) PrefManager.getInstance(getContext()).getObject(USER, User.class);
         if (user == null) {
 //            openLogin(getContext());
@@ -246,7 +244,7 @@ public class AccountFragment extends Fragment {
             layoutProfile.setVisibility(View.VISIBLE);
             phone.setText(user.getTelephone());
             email.setText(user.getEmail());
-            gov.setText(user.getGovernmant());
+//            gov.setText(user.getGovernmant());
             //area.setText(user.getArea());
             slat = Double.parseDouble(user.getLat());
             slong = Double.parseDouble(user.getLon());
@@ -258,7 +256,7 @@ public class AccountFragment extends Fragment {
             remarkAddress.setText(user.getRemarkaddress());
             houseNo.setText(user.getHouse_no());
             name.setOnClickListener(v -> openDialog(StaticMembers.NAME, getString(R.string.name), user.getName()));
-            gov.setOnClickListener(v -> openDialog(StaticMembers.GOV, getString(R.string.governorate), user.getGovernmant()));
+//            gov.setOnClickListener(v -> openDialog(StaticMembers.GOV, getString(R.string.governorate), user.getGovernmant()));
             //area.setOnClickListener(v -> openDialog(StaticMembers.AREA, getString(R.string.area), user.getArea()));
             block.setOnClickListener(v -> openDialog(StaticMembers.BLOCK, getString(R.string.block), user.getBlock()));
             street.setOnClickListener(v -> openDialog(StaticMembers.STREET, getString(R.string.street), user.getStreet()));
@@ -284,7 +282,7 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    void changeField(String key, String defaultVal, String s) {
+    private void changeField(String key, String defaultVal, String s) {
         if (defaultVal != null)
             if (defaultVal.equals(s))
                 return;

@@ -31,45 +31,6 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="governorate:"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        />
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/govLayout"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_gravity="center"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/gov"
-                        style="@style/editTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawablePadding="8dp"
-                        android:padding="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:background="@drawable/roundedbuttondrawablewhite"
-                        android:hint="@string/governorate"
-                        android:inputType="textPersonName"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
                         android:text="Area:"
                         android:layout_gravity="center"
                         android:textSize="@dimen/_10sdp"
@@ -163,7 +124,46 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
-                <LinearLayout
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="House No:"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/houseNoLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/houseNo"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/house_no"
+                        android:inputType="number"
+                        android:padding="@dimen/_10sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
@@ -242,43 +242,6 @@
                 </LinearLayout>
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="House No:"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/houseNoLayout"
-                    android:layout_width="0dp"
-                        android:layout_weight="3"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/houseNo"
-                        style="@style/editTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawablePadding="8dp"
-                        android:hint="@string/house_no"
-                        android:padding="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:background="@drawable/roundedbuttondrawablewhite"
-                        android:inputType="number"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
 
 
                 <Button
@@ -335,9 +298,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include layout="@layout/progress_layout"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
 </RelativeLayout>

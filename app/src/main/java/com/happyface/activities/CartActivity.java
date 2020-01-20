@@ -191,6 +191,7 @@ public class CartActivity extends BaseActivity {
      //region Open Dialog View
 
     private void setupBottomSheet() {
+
         @SuppressLint("InflateParams") View modalbottomsheet = getLayoutInflater().inflate(R.layout.create_modal_popup, null);
 
         dialog = new BottomSheetDialog(this);
@@ -213,11 +214,12 @@ public class CartActivity extends BaseActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (user.getArea()!=null&&user.getAvenue()!=null&&user.getGovernmant()!=null){
+                user = (User) PrefManager.getInstance(CartActivity.this).getObject(USER, User.class);
+                if (user.getArea()!=null&&user.getBlock()!=null&&user.getStreet()!=null&&user.getHouse_no()!=null){
                     CallCheckOut();
 
                 }else {
-                    StaticMembers.toastMessageShortFailed(CartActivity.this,"Check Your Address");
+                    StaticMembers.toastMessageShortFailed(CartActivity.this,getString(R.string.enter_your_address));
 
                 }
             }
@@ -240,19 +242,14 @@ public class CartActivity extends BaseActivity {
 
         Button savebtn = dialogview.findViewById(R.id.savebtn);
         Button cancelbtn = dialogview.findViewById(R.id.cancelbtn);
-        TextInputEditText gov = dialogview.findViewById(R.id.gov);
         TextInputEditText block = dialogview.findViewById(R.id.block);
         TextInputEditText street = dialogview.findViewById(R.id.street);
         TextInputEditText avenue = dialogview.findViewById(R.id.avenue);
         TextInputEditText remarkAddress = dialogview.findViewById(R.id.remarkAddress);
         TextInputEditText houseNo = dialogview.findViewById(R.id.houseNo);
-        AVLoadingIndicatorView avLoadingIndicatorView = dialogview.findViewById(R.id.avi);
 
         currentLocation = dialogview.findViewById(R.id.currentLocation);
 //         User user=new User();
-        if (user.getGovernmant()!=null){
-            gov.setText(user.getGovernmant()+"");
-        }
         if (user.getBlock()!=null){
             block.setText(user.getBlock()+"");
         }
@@ -321,32 +318,30 @@ public class CartActivity extends BaseActivity {
         savebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (StaticMembers.CheckTextInputEditText(gov, getString(R.string.phone_empty))&&
-                        StaticMembers.CheckTextInputEditText(block, getString(R.string.phone_empty))&&
-                        StaticMembers.CheckTextInputEditText(street, getString(R.string.phone_empty))&&
-                        StaticMembers.CheckTextInputEditText(avenue, getString(R.string.phone_empty))&&
-                        StaticMembers.CheckTextInputEditText(remarkAddress, getString(R.string.phone_empty))&&
-                        StaticMembers.CheckTextInputEditText(houseNo, getString(R.string.phone_empty))
+                if (
+                        StaticMembers.CheckTextInputEditText(block, getString(R.string.block_empty))&&
+                        StaticMembers.CheckTextInputEditText(street, getString(R.string.street_empty))&&
+                        StaticMembers.CheckTextInputEditText(houseNo, getString(R.string.houseno_empty))
                 ){
                     if (!currentLocationvalue.equals("")){
                         User newuser =new User();
                         newuser.setArea(selectedArea);
-                        newuser.setAvenue(avenue.getText().toString());
-                        newuser.setBlock(block.getText().toString());
-                        newuser.setGovernmant(gov.getText().toString());
-                        newuser.setHouse_no(houseNo.getText().toString());
+                        newuser.setAvenue(avenue.getText().toString()+"");
+                        newuser.setBlock(block.getText().toString()+"");
+                        newuser.setGovernmant("");
+                        newuser.setHouse_no(houseNo.getText().toString()+"");
                         newuser.setEmail(user.getEmail());
                         newuser.setId(user.getId());
                         newuser.setLanguage(user.getLanguage());
                         newuser.setLat(slat+"");
                         newuser.setLon(slong+"");
                         newuser.setName(user.getName());
-                        newuser.setRemarkaddress(remarkAddress.getText().toString());
-                        newuser.setStreet(street.getText().toString());
+                        newuser.setRemarkaddress(remarkAddress.getText().toString()+"");
+                        newuser.setStreet(street.getText().toString()+"");
                         newuser.setTelephone(user.getTelephone());
 
 //                        startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class));
-                        UpdateAddressDetails(newuser,avLoadingIndicatorView);
+                        UpdateAddressDetails(newuser);
                     }else {
                         TastyToast.makeText(CartActivity.this,getString(R.string.choose_current_location),TastyToast.LENGTH_SHORT,TastyToast.INFO);
                     }
@@ -418,8 +413,10 @@ public class CartActivity extends BaseActivity {
         }
     }
 
-    private void UpdateAddressDetails(User user,AVLoadingIndicatorView avi) {
-        avi.setVisibility(View.VISIBLE);
+    private void UpdateAddressDetails(User user) {
+        if (loading!=null){
+            loading.show();
+        }
         HashMap<String, String> params = new HashMap<>();
         params.put(StaticMembers.GOV, user.getGovernmant());
         params.put(StaticMembers.BLOCK, user.getBlock());
@@ -435,7 +432,9 @@ public class CartActivity extends BaseActivity {
         call.enqueue(new CallbackRetrofit<EditNameResponse>(this) {
             @Override
             public void onResponse(@NotNull Call<EditNameResponse> call, @NotNull Response<EditNameResponse> response) {
-                avi.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+                }
                 if (response.isSuccessful()) {
                     EditNameResponse result = response.body();
                     if (result != null) {
@@ -467,7 +466,9 @@ public class CartActivity extends BaseActivity {
             @Override
             public void onFailure(@NotNull Call<EditNameResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                avi.setVisibility(View.GONE);
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
+                }
             }
         });
 
@@ -552,7 +553,7 @@ public class CartActivity extends BaseActivity {
                     if (result != null) {
                         if (result.getStatus()) {
                             StaticMembers.toastMessageShortSuccess(CartActivity.this, result.getMessage());
-                            StaticMembers.startActivityOverAll(CartActivity.this,ConfirmBillActivity.class);
+                            startActivity(new Intent(CartActivity.this,ConfirmBillActivity.class));
                             finish();
 
                         }
