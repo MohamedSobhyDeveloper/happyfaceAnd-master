@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.activities.CartActivity;
 import com.happyface.activities.LogInActivity;
@@ -91,7 +93,13 @@ public class GiftsFragment extends DialogFragment {
             product = (CartItem) savedInstanceState.getSerializable(StaticMembers.PRODUCT);
         if (product != null) {
             if (product.getProduct() != null)
-                Glide.with(Objects.requireNonNull(getActivity())).load(product.getProduct().getLogo()).into(image);
+                Glide.with(Objects.requireNonNull(getActivity()))
+                        .asBitmap()
+                        .apply(new RequestOptions().override(75, 75))
+                        .load(product.getProduct().getLogo())
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(image);
+//                Glide.with(Objects.requireNonNull(getActivity())).load(product.getProduct().getLogo()).into(image);
             name.setText(product.getProduct() != null ? product.getProduct().getName() : "");
             productId.setText(
                     String.format(Locale.getDefault(), getString(R.string.product_id_s), product.getProductId()));

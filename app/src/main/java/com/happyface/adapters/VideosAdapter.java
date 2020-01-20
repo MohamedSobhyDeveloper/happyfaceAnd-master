@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.activities.FullScreenVideoActivity;
 import com.happyface.helpers.Loading;
@@ -48,7 +50,13 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.Holder> {
 
         holder.name.setText(video.getName());
         if (video.getLogo() != null)
-            Glide.with(context).load(video.getLogo()).into(holder.image);
+//            Glide.with(context).load(video.getLogo()).into(holder.image);
+        Glide.with(context)
+                .asBitmap()
+                .apply(new RequestOptions().override(ViewGroup.LayoutParams.MATCH_PARENT, 200))
+                .load(video.getLogo())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(holder.image);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, FullScreenVideoActivity.class);
             intent.putExtra(StaticMembers.VIDEO, video);

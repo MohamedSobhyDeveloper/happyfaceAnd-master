@@ -16,6 +16,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.activities.CartActivity;
 import com.happyface.activities.LogInActivity;
@@ -81,7 +83,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
             CartItem cartItem = cartData.getCart().get(position);
 
             if (cartItem.getProduct() != null)
-                Glide.with(activity).load(cartItem.getProduct().getLogo()).into(holder.image);
+//                Glide.with(activity).load(cartItem.getProduct().getLogo()).into(holder.image);
+            Glide.with(activity)
+                    .asBitmap()
+                    .apply(new RequestOptions().override(75, 75))
+                    .load(cartItem.getProduct().getLogo())
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(holder.image);
 
             if (cartItem.getAdditionalPrice() != 0) {
                 holder.additionalLayout.setVisibility(View.VISIBLE);

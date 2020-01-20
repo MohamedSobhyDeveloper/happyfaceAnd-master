@@ -13,6 +13,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.models.gifts.covers.DataItem;
 
@@ -54,7 +56,14 @@ public class CoversAdapter extends RecyclerView.Adapter<CoversAdapter.Holder> {
         DataItem cover = list.get(position);
         holder.name.setText(cover.getName());
         holder.price.setText(String.format(Locale.getDefault(), context.getString(R.string.s_kwd), cover.getPrice()));
-        Glide.with(context).load(cover.getCoverImage()).into(holder.image);
+//        Glide.with(context).load(cover.getCoverImage()).into(holder.image);
+        Glide.with(context)
+                .asBitmap()
+                .apply(new RequestOptions().override(140, 140))
+                .load(cover.getCoverImage())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(holder.image);
+
         // holder.itemView.setOnClickListener(v -> listener.onClick("" + cover.getId()));
         holder.checkbox.setChecked(position == checkedIndex);
         holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {

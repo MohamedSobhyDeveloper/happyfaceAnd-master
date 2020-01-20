@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.helpers.StaticMembers;
 import com.stfalcon.imageviewer.StfalconImageViewer;

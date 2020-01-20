@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.GsonBuilder;
 import com.happyface.R;
 import com.happyface.activities.ProductDetailsActivity;
@@ -64,7 +66,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
         if (product.getVideo() != null && !product.getVideo().isEmpty())
             holder.video.setVisibility(View.VISIBLE);
         if (product.getLogo() != null)
-            Glide.with(context).load(product.getLogo()).into(holder.image);
+//            Glide.with(context).load(product.getLogo()).into(holder.image);
+        Glide.with(context)
+                .asBitmap()
+                .apply(new RequestOptions().override(170, 130))
+                .load(product.getLogo())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(holder.image);
+
         holder.favorite.setChecked(product.isWishlist());
         holder.favorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (buttonView.isPressed()) {

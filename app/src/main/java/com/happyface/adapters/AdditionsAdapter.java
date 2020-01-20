@@ -14,6 +14,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.models.gifts.additional.DataItem;
 
@@ -52,7 +54,14 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Hold
         DataItem additional = list.get(position);
         holder.name.setText(additional.getName());
         holder.price.setText(String.format(Locale.getDefault(), context.getString(R.string.s_kwd), additional.getPrice()));
-        Glide.with(context).load(additional.getImage()).into(holder.image);
+//        Glide.with(context).load(additional.getImage()).into(holder.image);
+        Glide.with(context)
+                .asBitmap()
+                .apply(new RequestOptions().override(140, 140))
+                .load(additional.getImage())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(holder.image);
+
         holder.checkbox.setChecked(additional.isSelected());
         holder.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (buttonView.isPressed() || cardClick) {

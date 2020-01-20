@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.happyface.R;
 import com.happyface.models.category_models.DataItem;
 import com.happyface.models.search_products.Product;
@@ -41,7 +43,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Holder
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         DataItem category = list.get(position);
         holder.name.setText(category.getName());
-        Glide.with(context).load(category.getImageIcon()).into(holder.image);
+//        Glide.with(context).load(category.getImageIcon()).into(holder.image);
+        Glide.with(context)
+                .asBitmap()
+                .apply(new RequestOptions().override(170, 130))
+                .load(category.getImageIcon())
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(holder.image);
+
         holder.itemView.setOnClickListener(v -> listener.onClick(""+category.getId()));
     }
 
