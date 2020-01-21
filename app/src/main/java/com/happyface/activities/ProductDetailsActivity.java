@@ -177,6 +177,9 @@ public class ProductDetailsActivity extends BaseActivity {
         }
 
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
+            if (loading!=null&&loading.isShowing()){
+                loading.dismiss();
+            }
             Intent intent = new Intent(getBaseContext(), LogInActivity.class);
             intent.putExtra(StaticMembers.ACTION, true);
             startActivity(intent);
@@ -219,6 +222,9 @@ public class ProductDetailsActivity extends BaseActivity {
 
         }
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
+            if (loading!=null&&loading.isShowing()){
+                loading.dismiss();
+            }
             StaticMembers.openLogin(this);
         } else {
             Call<WishlistResponse> call = RetrofitModel.getApi(this).toggleWishlist(product.getId());
