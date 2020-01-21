@@ -106,6 +106,9 @@ public class StaticMembers {
     public static final String LAT = "latitude";
     public static final String LONG = "longitude";
     public static final String LON = "lon";
+    public static final String floor = "floor";
+    public static final String flat = "flat";
+
     public static final String LAT_ = "lat";
     public static final String ADDRESS = "address";
     public static final String TOKEN = "token";

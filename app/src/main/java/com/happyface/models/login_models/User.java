@@ -16,6 +16,24 @@ public class User {
 
     private String remarkaddress;
     private String house_no;
+    private String floor;
+    private String flat;
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getFlat() {
+        return flat;
+    }
+
+    public void setFlat(String flat) {
+        this.flat = flat;
+    }
 
     public String getRemarkaddress() {
         return remarkaddress;

@@ -149,4 +149,11 @@
     <string name="choose_area">Choose Area</string>
     <string name="address_details">Address Details</string>
     <string name="enter_your_address">Please Enter Your Address</string>
+    <string name="block_">Block:</string>
+    <string name="street_">Street:</string>
+    <string name="house_no_">House No:</string>
+    <string name="floor_">Floor:</string>
+    <string name="flat_">Flat:</string>
+    <string name="flat">flat</string>
+    <string name="floor">Floor</string>
 </resources>

@@ -247,6 +247,8 @@ public class CartActivity extends BaseActivity {
         TextInputEditText avenue = dialogview.findViewById(R.id.avenue);
         TextInputEditText remarkAddress = dialogview.findViewById(R.id.remarkAddress);
         TextInputEditText houseNo = dialogview.findViewById(R.id.houseNo);
+        TextInputEditText floorNo = dialogview.findViewById(R.id.floorNo);
+        TextInputEditText flatNo = dialogview.findViewById(R.id.flatNo);
 
         currentLocation = dialogview.findViewById(R.id.currentLocation);
 //         User user=new User();
@@ -269,6 +271,15 @@ public class CartActivity extends BaseActivity {
             houseNo.setText(user.getHouse_no()+"");
 
         }
+
+        if (user.getFloor()!=null){
+            floorNo.setText(user.getFloor()+"");
+
+        }
+        if (user.getFlat()!=null){
+            flatNo.setText(user.getFlat()+"");
+        }
+
         if (user.getLat()!=null){
             currentLocation.setText(getString(R.string.current_location_ss)+ user.getLat()+","+ user.getLon());
             slat= Double.parseDouble(user.getLat());
@@ -339,6 +350,8 @@ public class CartActivity extends BaseActivity {
                         newuser.setRemarkaddress(remarkAddress.getText().toString()+"");
                         newuser.setStreet(street.getText().toString()+"");
                         newuser.setTelephone(user.getTelephone());
+                        newuser.setFloor(floorNo.getText().toString()+"");
+                        newuser.setFlat(flatNo.getText().toString()+"");
 
 //                        startActivity(new Intent(getBaseContext(), ConfirmBillActivity.class));
                         UpdateAddressDetails(newuser);
@@ -427,6 +440,8 @@ public class CartActivity extends BaseActivity {
         params.put(StaticMembers.AREA, user.getArea());
         params.put(StaticMembers.LAT_, user.getLat());
         params.put(StaticMembers.LON, user.getLon());
+        params.put(StaticMembers.floor, user.getFloor());
+        params.put(StaticMembers.flat, user.getFlat());
 
         Call<EditNameResponse> call = RetrofitModel.getApi(this).editField(params);
         call.enqueue(new CallbackRetrofit<EditNameResponse>(this) {
