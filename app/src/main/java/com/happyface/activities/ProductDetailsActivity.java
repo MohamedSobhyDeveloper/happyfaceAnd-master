@@ -131,16 +131,18 @@ public class ProductDetailsActivity extends BaseActivity {
 
             }
         });
-        priceOld.setText(String.format(Locale.getDefault(), getString(R.string.s_kwd), product.getPrice()));
+        priceOld.setText(getString(R.string.s_kwd)+" "+product.getPrice());
         priceOld.setPaintFlags(priceOld.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        price.setText(String.format(Locale.getDefault(), getString(R.string.s_kwd), product.getPrice()));
+        price.setText(getString(R.string.s_kwd)+" "+ product.getPrice());
         if (product.getPrice() != null
                 && !product.getNewPrice().isEmpty()
                 && !product.getNewPrice().equals("0")) {
-            price.setText(String.format(Locale.getDefault(), getString(R.string.s_kwd), product.getNewPrice()));
+            price.setText(getString(R.string.s_kwd)+" "+product.getNewPrice());
             priceOld.setVisibility(View.VISIBLE);
         } else priceOld.setVisibility(View.GONE);
-        addToCartText.setText(String.format(Locale.getDefault(), getString(R.string.add_to_cart_s), Float.parseFloat(product.getPrice()) * amount));
+//        addToCartText.setText(String.format(Locale.getDefault(), getString(R.string.add_to_cart_s), Float.parseFloat(product.getPrice()) * amount));
+        addToCartText.setText(getString(R.string.add_to_cart_s)+" ("+ Float.parseFloat(product.getPrice()) * amount+")");
+
         subCode.setText(product.getProductNo());
         gender.setText(product.getGender() == 0 ? R.string.boy : R.string.girl);
         weight.setText(product.getWeight());

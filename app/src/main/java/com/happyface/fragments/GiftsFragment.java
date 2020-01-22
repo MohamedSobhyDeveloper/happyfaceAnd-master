@@ -1,5 +1,6 @@
 package com.happyface.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -84,6 +85,7 @@ public class GiftsFragment extends DialogFragment {
     private HashMap<String, String> params;
     Loading loading;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -101,9 +103,8 @@ public class GiftsFragment extends DialogFragment {
                         .into(image);
 //                Glide.with(Objects.requireNonNull(getActivity())).load(product.getProduct().getLogo()).into(image);
             name.setText(product.getProduct() != null ? product.getProduct().getName() : "");
-            productId.setText(
-                    String.format(Locale.getDefault(), getString(R.string.product_id_s), product.getProductId()));
-            price.setText(String.format(Locale.getDefault(), getString(R.string.s_kwd), product.getPrice()));
+            productId.setText(getString(R.string.product_id_s)+" "+ product.getProductId());
+            price.setText(getString(R.string.s_kwd)+" "+ product.getPrice());
             params = new HashMap<>();
             params.put(StaticMembers.PRODUCT_ID, "" + product.getProduct().getId());
             params.put(StaticMembers.QUANTITY, product.getQuantity());

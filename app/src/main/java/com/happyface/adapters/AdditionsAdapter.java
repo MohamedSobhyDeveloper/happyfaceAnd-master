@@ -53,7 +53,7 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Hold
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         DataItem additional = list.get(position);
         holder.name.setText(additional.getName());
-        holder.price.setText(String.format(Locale.getDefault(), context.getString(R.string.s_kwd), additional.getPrice()));
+        holder.price.setText(context.getString(R.string.s_kwd)+" "+additional.getPrice());
 //        Glide.with(context).load(additional.getImage()).into(holder.image);
         Glide.with(context)
                 .asBitmap()

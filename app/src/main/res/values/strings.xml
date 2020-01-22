@@ -43,7 +43,7 @@
     <string name="phone_empty">Phone is empty</string>
     <string name="block_empty">Block is empty</string>
     <string name="street_empty">Street is empty</string>
-    <string name="houseno_empty">HouseNo is empty</string>
+    <string name="houseno_empty">House is empty</string>
     <string name="please_enter_the_code_that_we_send_it_in_your_mobile">please, enter the code that we send it in your
         mobile
     </string>
@@ -67,17 +67,17 @@
     <string name="sizes">Sizes</string>
     <string name="d_reviewers">%d reviewers</string>
     <string name="description">Description:</string>
-    <string name="add_to_cart_s">Add to Cart (%.2f)</string>
-    <string name="buy_now_s">Buy Now (%.2f)</string>
+    <string name="add_to_cart_s">Add to Cart</string>
+    <string name="buy_now_s">Buy Now </string>
     <string name="remove">Remove</string>
     <string name="add">Add</string>
-    <string name="s_kwd">%s KWD</string>
-    <string name="f_kwd">%.2f KWD</string>
+    <string name="s_kwd">KWD</string>
+    <string name="f_kwd">KWD</string>
     <string name="dis_s_kwd">Discount %s KWD</string>
     <string name="cart">Cart</string>
     <string name="total">Total</string>
     <string name="no_items_found">No items found</string>
-    <string name="product_id_s">item code: %s</string>
+    <string name="product_id_s">item code:</string>
     <string name="order">Order</string>
     <string name="messages">Messages</string>
     <string name="address">Address</string>
@@ -116,7 +116,7 @@
     <string name="girl">Girl</string>
     <string name="boy">Boy</string>
     <string name="remark_address">Remark Address</string>
-    <string name="house_no">House No.</string>
+    <string name="house_no">House</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="birthday">Birthday</string>
@@ -138,7 +138,7 @@
     <string name="edit_additionals">Edit Additionals</string>
     <string name="add_additionals">Add Additionals</string>
     <string name="title_activity_maps">Map</string>
-    <string name="current_location">Current Location</string>
+    <string name="current_location">Location on Map</string>
     <string name="current_location_s">Current Location:\n %f, %f</string>
     <string name="current_location_ss">Current Location:\n</string>
     <string name="confirm">Confirm</string>
@@ -151,11 +151,13 @@
     <string name="enter_your_address">Please Enter Your Address</string>
     <string name="block_">Block:</string>
     <string name="street_">Street:</string>
-    <string name="house_no_">House No:</string>
+    <string name="house_no_">House:</string>
     <string name="floor_">Floor:</string>
     <string name="flat_">Flat:</string>
     <string name="flat">flat</string>
     <string name="floor">Floor</string>
     <string name="edit_profile">Edit Address</string>
     <string name="area_">Area:</string>
+    <string name="avenue_">Avenue:</string>
+    <string name="remark_address_">Remark Address:</string>
 </resources>

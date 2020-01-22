@@ -24,7 +24,6 @@ import com.happyface.R;
 import com.happyface.activities.LogInActivity;
 import com.happyface.activities.MainActivity;
 import com.happyface.activities.MapsActivity;
-import com.happyface.activities.SplashActivity;
 import com.happyface.helpers.CallbackRetrofit;
 import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
@@ -34,7 +33,6 @@ import com.happyface.models.area_models.AreaResponse;
 import com.happyface.models.area_models.DataItem;
 import com.happyface.models.login_models.EditNameResponse;
 import com.happyface.models.login_models.User;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +57,10 @@ public class AccountFragment extends Fragment {
 
     @BindView(R.id.layout_profile)
     LinearLayout layoutProfile;
+    @BindView(R.id.floorNo)
+    TextView floorNo;
+    @BindView(R.id.flat)
+    TextView flat;
     private String selectedArea;
     private double slat, slong;
     Loading loading;
@@ -73,6 +75,7 @@ public class AccountFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
         return v;
     }
+
     @BindView(R.id.name)
     TextView name;
     @BindView(R.id.phone)
@@ -100,13 +103,13 @@ public class AccountFragment extends Fragment {
     @BindView(R.id.saveArea)
     CardView saveArea;
     private User user;
-    private int update=0;
+    private int update = 0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        loading=new Loading(getActivity());
+        loading = new Loading(getActivity());
 
         updateUI();
 
@@ -157,11 +160,13 @@ public class AccountFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == StaticMembers.LOCATION_CODE && data != null) {
-                changeField(2,LAT_, slat + "", "" + data.getDoubleExtra(StaticMembers.LAT, 0));
-                changeField(2,LON, slong + "", "" + data.getDoubleExtra(StaticMembers.LONG, 0));
+                changeField(2, LAT_, slat + "", "" + data.getDoubleExtra(StaticMembers.LAT, 0));
+                changeField(2, LON, slong + "", "" + data.getDoubleExtra(StaticMembers.LONG, 0));
                 slat = data.getDoubleExtra(StaticMembers.LAT, 0);
                 slong = data.getDoubleExtra(StaticMembers.LONG, 0);
-                currentLocation.setText(String.format(Locale.getDefault(), "%f, %f", slat, slong));
+//                currentLocation.setText(String.format(Locale.getDefault(), "%f, %f", slat, slong));
+                currentLocation.setText(slat+","+ slong);
+
             }
         }
     }
@@ -187,7 +192,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<AreaResponse> call, @NotNull Response<AreaResponse> response) {
 //                progress.setVisibility(View.GONE);
-                if (loading!=null&&loading.isShowing()){
+                if (loading != null && loading.isShowing()) {
                     loading.dismiss();
 
                 }
@@ -211,7 +216,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onFailure(@NotNull Call<AreaResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                if (loading!=null&&loading.isShowing()){
+                if (loading != null && loading.isShowing()) {
                     loading.dismiss();
 
                 }
@@ -232,7 +237,7 @@ public class AccountFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
         alertDialog.setView(input); // uncomment this line
-        alertDialog.setPositiveButton(getString(R.string.ok), (dialog, which) -> changeField(2,key, defaultVal, input.getText().toString()));
+        alertDialog.setPositiveButton(getString(R.string.ok), (dialog, which) -> changeField(2, key, defaultVal, input.getText().toString()));
         alertDialog.setNegativeButton(getString(R.string.cancel), null);
         alertDialog.show();
     }
@@ -248,15 +253,21 @@ public class AccountFragment extends Fragment {
             email.setText(user.getEmail());
 //            gov.setText(user.getGovernmant());
             //area.setText(user.getArea());
-            slat = Double.parseDouble(user.getLat());
-            slong = Double.parseDouble(user.getLon());
-            currentLocation.setText(String.format(Locale.getDefault(), "%f, %f", slat, slong));
+            if (user.getLat()!=null&&!user.getLat().equals("0")){
+                slat = Double.parseDouble(user.getLat());
+                slong = Double.parseDouble(user.getLon());
+//            currentLocation.setText(String.format(Locale.getDefault(), "%f, %f", slat, slong));
+                currentLocation.setText(slat+","+ slong);
+            }
+
             block.setText(user.getBlock());
             street.setText(user.getStreet());
             avenue.setText(user.getAvenue());
             name.setText(user.getName());
             remarkAddress.setText(user.getRemarkaddress());
             houseNo.setText(user.getHouse_no());
+            floorNo.setText(user.getFloor());
+            flat.setText(user.getFlat());
             name.setOnClickListener(v -> openDialog(StaticMembers.NAME, getString(R.string.name), user.getName()));
 //            gov.setOnClickListener(v -> openDialog(StaticMembers.GOV, getString(R.string.governorate), user.getGovernmant()));
             //area.setOnClickListener(v -> openDialog(StaticMembers.AREA, getString(R.string.area), user.getArea()));
@@ -265,6 +276,9 @@ public class AccountFragment extends Fragment {
             avenue.setOnClickListener(v -> openDialog(StaticMembers.AVENUE, getString(R.string.avenue), user.getAvenue()));
             remarkAddress.setOnClickListener(v -> openDialog(StaticMembers.REMARK_ADDRESS, getString(R.string.remark_address), user.getRemarkaddress()));
             houseNo.setOnClickListener(v -> openDialog(StaticMembers.HOUSE_NO, getString(R.string.house_no), user.getHouse_no()));
+            floorNo.setOnClickListener(v -> openDialog(StaticMembers.floor, getString(R.string.house_no), user.getFloor()));
+            flat.setOnClickListener(v -> openDialog(StaticMembers.flat, getString(R.string.house_no), user.getFlat()));
+
             List<String> areas = new ArrayList<>();
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, areas);
             area.setAdapter(adapter);
@@ -274,12 +288,12 @@ public class AccountFragment extends Fragment {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedArea = areas.get(position);
 //                    saveArea.setVisibility(View.VISIBLE);
-                    if (update==1){
-                        changeField(1,AREA, "", selectedArea);
+                    if (update == 1) {
+                        changeField(1, AREA, "", selectedArea);
 
                     }
 
-                    update=1;
+                    update = 1;
 
 
                 }
@@ -294,12 +308,12 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    private void changeField(int updatedField,String key, String defaultVal, String s) {
+    private void changeField(int updatedField, String key, String defaultVal, String s) {
         if (defaultVal != null)
             if (defaultVal.equals(s))
                 return;
 
-        if (loading!=null){
+        if (loading != null) {
             loading.show();
 
         }
@@ -309,7 +323,7 @@ public class AccountFragment extends Fragment {
         call.enqueue(new CallbackRetrofit<EditNameResponse>(getContext()) {
             @Override
             public void onResponse(@NotNull Call<EditNameResponse> call, @NotNull Response<EditNameResponse> response) {
-                if (loading!=null&&loading.isShowing()){
+                if (loading != null && loading.isShowing()) {
                     loading.dismiss();
 
                 }
@@ -319,24 +333,23 @@ public class AccountFragment extends Fragment {
                         if (result.isStatus()) {
 //                            PrefManager.getInstance(getContext()).setAPIToken(result.getData().getToken());
                             PrefManager.getInstance(getContext()).setObject(USER, result.getData().getUser());
-                            if (updatedField==2){
-                                update=0;
+                            if (updatedField == 2) {
+                                update = 0;
                                 updateUI();
                             }
 //                            saveArea.setVisibility(View.GONE);
                         }
                         StaticMembers.toastMessageShortSuccess(getContext(), result.getMessage());
                     }
-                }
-                else {
-                    StaticMembers.toastMessageShortSuccess(getActivity(),"Data Updated Successfully");
+                } else {
+                    StaticMembers.toastMessageShortSuccess(getActivity(), "Data Updated Successfully");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<EditNameResponse> call, @NotNull Throwable t) {
                 super.onFailure(call, t);
-                if (loading!=null&&loading.isShowing()){
+                if (loading != null && loading.isShowing()) {
                     loading.dismiss();
 
                 }

@@ -79,11 +79,14 @@
                         android:layout_gravity="center"
                         android:drawablePadding="8dp"
                         android:hint="@string/block"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:padding="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@drawable/roundedbuttondrawablewhite"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                         />
                 </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -118,11 +121,54 @@
                         android:drawablePadding="8dp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:hint="@string/street"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
                         android:padding="@dimen/_10sdp"
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/avenue_"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/_10sdp"
+                    android:textColor="@color/black"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/avenueLayout"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    app:hintEnabled="false">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/avenue"
+                        style="@style/editTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawablePadding="8dp"
+                        android:hint="@string/avenue"
+                        android:padding="@dimen/_10sdp"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
+                        android:background="@drawable/roundedbuttondrawablewhite"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
 
 
             <LinearLayout
@@ -157,7 +203,9 @@
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:drawablePadding="8dp"
                         android:hint="@string/house_no"
-                        android:inputType="number"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
+                        android:inputType="textPersonName"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -194,6 +242,8 @@
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:drawablePadding="8dp"
                         android:hint="@string/floor"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
                         android:inputType="number"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -232,48 +282,12 @@
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:drawablePadding="8dp"
                         android:hint="@string/flat"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
                         android:inputType="number"
                         android:padding="@dimen/_10sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Avenue:"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/avenueLayout"
-                    android:layout_width="0dp"
-                        android:layout_weight="3"
-                    android:layout_height="wrap_content"
-                    app:hintEnabled="false">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/avenue"
-                        style="@style/editTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:drawablePadding="8dp"
-                        android:hint="@string/avenue"
-                        android:padding="@dimen/_10sdp"
-                        android:background="@drawable/roundedbuttondrawablewhite"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -283,7 +297,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="Remark Address:"
+                        android:text="@string/remark_address_"
                         android:layout_gravity="center"
                         android:textSize="@dimen/_10sdp"
                         android:textColor="@color/black"
@@ -309,14 +323,13 @@
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:hint="@string/remark_address"
+                        android:textAlignment="viewStart"
+                        tools:ignore="RtlCompat"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
-
-
-
 
                 <Button
                     android:id="@+id/currentLocation"
@@ -327,6 +340,8 @@
                     android:text="@string/current_location"
                     android:textAllCaps="false"
                     android:padding="@dimen/_10sdp"
+                    android:textAlignment="viewStart"
+                    tools:ignore="RtlCompat"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@drawable/roundedbuttondrawablewhite"
                     />

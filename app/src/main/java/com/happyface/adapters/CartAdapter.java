@@ -93,8 +93,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
 
             if (cartItem.getAdditionalPrice() != 0) {
                 holder.additionalLayout.setVisibility(View.VISIBLE);
-                holder.priceAdditional.setText(String.format(Locale.getDefault(), activity.getString(R.string.s_kwd),
-                        new DecimalFormat("#.#").format(cartItem.getAdditionalPrice())));
+                holder.priceAdditional.setText(activity.getString(R.string.s_kwd)+" "+cartItem.getAdditionalPrice());
                 holder.editAddText.setText(activity.getString(R.string.edit_additionals));
             }
 
@@ -102,9 +101,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                 GiftsFragment.getInstance(cartItem).show(activity.getSupportFragmentManager(), "gift");
             });
             holder.name.setText(cartItem.getProduct() != null ? cartItem.getProduct().getName() : "");
-            holder.productId.setText(
-                    String.format(Locale.getDefault(), activity.getString(R.string.product_id_s), cartItem.getProductId()));
-            holder.price.setText(String.format(Locale.getDefault(), activity.getString(R.string.s_kwd), cartItem.getPrice()));
+            holder.productId.setText(activity.getString(R.string.product_id_s)+" "+cartItem.getProductId());
+            holder.price.setText(activity.getString(R.string.s_kwd)+" "+cartItem.getPrice());
             /*holder.itemView.setOnClickListener(v -> {
 
             });*/
@@ -135,7 +133,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
         } else {
             holder.totalLayout.setVisibility(View.GONE);
             holder.itemLayout.setVisibility(View.GONE);
-            holder.total.setText(String.format(Locale.getDefault(), activity.getString(R.string.f_kwd), cartData.getTotal()));
+            holder.total.setText(activity.getString(R.string.f_kwd)+""+cartData.getTotal());
         }
     }
 

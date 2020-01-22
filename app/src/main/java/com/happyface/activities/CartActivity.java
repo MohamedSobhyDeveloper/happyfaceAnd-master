@@ -280,7 +280,7 @@ public class CartActivity extends BaseActivity {
             flatNo.setText(user.getFlat()+"");
         }
 
-        if (user.getLat()!=null){
+        if (user.getLat()!=null&&!user.getLat().equals("0")){
             currentLocation.setText(getString(R.string.current_location_ss)+ user.getLat()+","+ user.getLon());
             slat= Double.parseDouble(user.getLat());
             slong= Double.parseDouble(user.getLon());
@@ -393,6 +393,7 @@ public class CartActivity extends BaseActivity {
         } else {
             Call<CartResponse> call = RetrofitModel.getApi(getBaseContext()).getCart();
             call.enqueue(new CallbackRetrofit<CartResponse>(this) {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onResponse(@NotNull Call<CartResponse> call, @NotNull Response<CartResponse> response) {
                     if (loading!=null&&loading.isShowing()){
@@ -403,7 +404,7 @@ public class CartActivity extends BaseActivity {
                         cartData = response.body().getData();
                         adapter.setCartData(cartData);
                         adapter.notifyDataSetChanged();
-                        total.setText(String.format(Locale.getDefault(), getString(R.string.f_kwd), cartData.getTotal()));
+                        total.setText(getString(R.string.f_kwd)+" "+cartData.getTotal());
                         if (cartData.getTotal()>0){
                             noItem.setVisibility(View.GONE);
                             chekoutLayout.setVisibility(View.VISIBLE);

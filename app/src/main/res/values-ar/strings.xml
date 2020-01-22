@@ -124,17 +124,17 @@
 
     <string name="description">وصف:</string>
 
-    <string name="add_to_cart_s">اضافة الى السلة (%.2f)</string>
+    <string name="add_to_cart_s">اضافة الى السلة </string>
 
-    <string name="buy_now_s">الشراء الآن (%.2f)</string>
+    <string name="buy_now_s">الشراء الآن</string>
 
     <string name="remove">حذف</string>
 
     <string name="add">اضافة</string>
 
-    <string name="s_kwd">%s دك</string>
+    <string name="s_kwd"> دك</string>
 
-    <string name="f_kwd">%.2f دك</string>
+    <string name="f_kwd"> دك</string>
 
     <string name="dis_s_kwd">تخفيض %s KWD</string>
 
@@ -144,7 +144,7 @@
 
     <string name="no_items_found">لا يوجد عناصر</string>
 
-    <string name="product_id_s">كود: %s</string>
+    <string name="product_id_s">كود:</string>
 
     <string name="order">الطلب</string>
 
@@ -274,7 +274,7 @@
 
     <string name="title_activity_maps">خريطة</string>
 
-    <string name="current_location">المكان الحالي</string>
+    <string name="current_location">العنوان على الخريطة</string>
 
     <string name="current_location_s">الموقع الحالى:\n %f, %f</string>
 
@@ -295,13 +295,15 @@
     <string name="address_details">تفاصيل العنوان</string>
 
     <string name="enter_your_address">اضف العنوان</string>
-    <string name="block_">منطقة:</string>
-    <string name="street_">شارع:</string>
-    <string name="house_no_">رقم المنزل:</string>
+    <string name="block_">القطعة:</string>
+    <string name="street_">الشارع:</string>
+    <string name="house_no_"> المنزل:</string>
     <string name="floor_">الدور:</string>
-    <string name="flat_">شقة:</string>
-    <string name="flat">شقة</string>
+    <string name="flat_">الشقة:</string>
+    <string name="flat">الشقة</string>
     <string name="floor">الدور</string>
     <string name="edit_profile">تعديل العنوان</string>
-    <string name="area_">منطقة:</string>
+    <string name="area_">المنطقة:</string>
+    <string name="avenue_">الجادة:</string>
+    <string name="remark_address_">ملاحظات العنوان:</string>
 </resources>
