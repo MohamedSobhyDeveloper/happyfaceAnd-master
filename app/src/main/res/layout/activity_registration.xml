@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -77,9 +78,11 @@
                         android:drawablePadding="8dp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:padding="@dimen/_10sdp"
+                        android:textAlignment="viewStart"
                         android:background="@drawable/roundedbuttondrawablewhite"
                         android:hint="@string/phone"
-                        android:inputType="phone" />
+                        android:inputType="phone"
+                        tools:ignore="RtlCompat" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -278,9 +281,11 @@
                         android:drawablePadding="8dp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:hint="@string/pass"
+                        android:textAlignment="viewStart"
                         android:padding="@dimen/_10sdp"
                         android:background="@drawable/roundedbuttondrawablewhite"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        tools:ignore="RtlCompat" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -304,8 +309,10 @@
                         android:hint="@string/conf_pass"
                         android:imeOptions="actionDone"
                         android:padding="@dimen/_10sdp"
+                        android:textAlignment="viewStart"
                         android:background="@drawable/roundedbuttondrawablewhite"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        tools:ignore="RtlCompat" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.cardview.widget.CardView

@@ -156,4 +156,6 @@
     <string name="flat_">Flat:</string>
     <string name="flat">flat</string>
     <string name="floor">Floor</string>
+    <string name="edit_profile">Edit Address</string>
+    <string name="area_">Area:</string>
 </resources>

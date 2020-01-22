@@ -400,7 +400,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="@string/current_location"
+                        android:hint="@string/current_location"
                         android:textAlignment="viewStart"
                         android:layoutDirection="locale"
                         android:textAllCaps="false"
