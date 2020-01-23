@@ -55,11 +55,13 @@ public class MessageBottomSheet extends BottomSheetDialogFragment {
     private MessageCardsAdapter messageCardsAdapter;
     private MessageInput messageInput;
     private MessageListener messageListener;
+    Loading loading;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        loading=new Loading(getActivity());
         if (messageInput == null)
             messageInput = new MessageInput();
         else {
@@ -109,10 +111,14 @@ public class MessageBottomSheet extends BottomSheetDialogFragment {
     }
 
     void getMessageCards() {
+        if (loading!=null){
+            loading.show();
+        }
         Call<MessageGiftResponse> call = RetrofitModel.getApi(getActivity()).getMessages();
         call.enqueue(new CallbackRetrofit<MessageGiftResponse>(getActivity()) {
             @Override
             public void onResponse(@NotNull Call<MessageGiftResponse> call, @NotNull Response<MessageGiftResponse> response) {
+
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     messageCards.clear();
                     messageCards.addAll(response.body().getData());
@@ -126,6 +132,11 @@ public class MessageBottomSheet extends BottomSheetDialogFragment {
                         }
                     }
                     messageCardsAdapter.notifyDataSetChanged();
+
+
+                }
+                if (loading!=null&&loading.isShowing()){
+                    loading.dismiss();
                 }
             }
         });

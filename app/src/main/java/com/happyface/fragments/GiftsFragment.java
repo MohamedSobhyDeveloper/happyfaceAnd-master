@@ -183,7 +183,7 @@ public class GiftsFragment extends DialogFragment {
         if (messageInput1.getMessage() != null && !messageInput1.getMessage().isEmpty())
             stringBuilder.append(String.format(Locale.getDefault(), getString(R.string.message_s), messageInput1.getMessage())).append("\n");
         if (messageInput1.getCoverId() != -1) {
-            stringBuilder.append(getString(R.string.cover_id)+" "+messageInput1.getCoverId()).append("\n");
+//            stringBuilder.append(getString(R.string.cover_id)+" "+messageInput1.getCoverId()).append("\n");
             params.put(StaticMembers.GIFT_MESSAGE_ID, "" + messageInput1.getCoverId());
         } else params.remove(StaticMembers.GIFT_MESSAGE_ID);
         messageText.setText(stringBuilder);

@@ -20,12 +20,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.GsonBuilder;
 import com.happyface.R;
+import com.happyface.activities.CartActivity;
+import com.happyface.activities.LogInActivity;
 import com.happyface.activities.ProductDetailsActivity;
 import com.happyface.helpers.CallbackRetrofit;
 import com.happyface.helpers.Loading;
 import com.happyface.helpers.PrefManager;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.helpers.StaticMembers;
+import com.happyface.models.cart.AddCartResponse;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.wishlist_models.ErrorWishListResponse;
 import com.happyface.models.wishlist_models.WishlistResponse;
@@ -82,14 +85,66 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
         holder.name.setText(product.getName());
         if (product.getPrice() != null)
             holder.price.setText(product.getPrice());
-        holder.productId.setText(product.getProductNo());
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProductDetailsActivity.class);
             intent.putExtra(StaticMembers.PRODUCT, product);
             context.startActivity(intent);
         });
+
+
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeCartItem(position);
+            }
+        });
     }
 
+    private void changeCartItem(int position) {
+        // progress.setVisibility(View.VISIBLE);
+        if (loading!=null){
+            loading.show();
+
+        }
+
+        if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
+            if (loading!=null&&loading.isShowing()){
+                loading.dismiss();
+            }
+            Intent intent = new Intent(getBaseContext(), LogInActivity.class);
+            intent.putExtra(StaticMembers.ACTION, true);
+            context.startActivity(intent);
+        } else {
+
+            Call<AddCartResponse> call = RetrofitModel.getApi(context).addOrEditCart("" + list.get(position).getId(),1);
+            call.enqueue(new CallbackRetrofit<AddCartResponse>(context) {
+                @Override
+                public void onResponse(@NotNull Call<AddCartResponse> call, @NotNull Response<AddCartResponse> response) {
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+                    if (!response.isSuccessful()) {
+                        //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
+                        StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(),activity);
+                    } else if (response.body() != null) {
+                        context.startActivity(new Intent(getBaseContext(), CartActivity.class));
+                        StaticMembers.toastMessageShortSuccess(getBaseContext(), response.body().getMessage());
+                        //amountText.setText(String.format(Locale.getDefault(), "%d", amount));
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<AddCartResponse> call, @NotNull Throwable t) {
+                    super.onFailure(call, t);
+                    if (loading!=null&&loading.isShowing()){
+                        loading.dismiss();
+
+                    }
+                }
+            });
+        }
+    }
 
     private void removeItem(int position) {
         list.remove(position);
@@ -170,11 +225,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Hold
         @BindView(R.id.price)
         TextView price;
 
-        @BindView(R.id.productId)
-        TextView productId;
-
         @BindView(R.id.favorite)
         CheckBox favorite;
+
+        @BindView(R.id.addToCart)
+        CheckBox addToCart;
 
         Holder(@NonNull View itemView) {
             super(itemView);
