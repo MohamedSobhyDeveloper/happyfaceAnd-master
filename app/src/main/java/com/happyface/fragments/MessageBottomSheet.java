@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.happyface.R;
 import com.happyface.adapters.MessageCardsAdapter;
 import com.happyface.helpers.CallbackRetrofit;
+import com.happyface.helpers.Loading;
 import com.happyface.helpers.RetrofitModel;
 import com.happyface.models.gifts.messages.DataItem;
 import com.happyface.models.gifts.messages.MessageGiftResponse;
@@ -85,9 +86,9 @@ public class MessageBottomSheet extends BottomSheetDialogFragment {
         getMessageCards();
         toolbar.setNavigationOnClickListener(v -> dismiss());
         save.setOnClickListener(v -> {
-            messageInput.setFrom(fromText.getText().toString());
-            messageInput.setTo(toText.getText().toString());
-            messageInput.setMessage(messageText.getText().toString());
+            messageInput.setFrom(fromText.getText().toString()+"");
+            messageInput.setTo(toText.getText().toString()+"");
+            messageInput.setMessage(messageText.getText().toString()+"");
             messageListener.onSaveClick(messageInput);
             dismiss();
         });

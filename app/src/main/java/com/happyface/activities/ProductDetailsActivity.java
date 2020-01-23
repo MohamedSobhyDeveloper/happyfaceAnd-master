@@ -131,13 +131,14 @@ public class ProductDetailsActivity extends BaseActivity {
 
             }
         });
-        priceOld.setText(getString(R.string.s_kwd)+" "+product.getPrice());
+        priceOld.setText(product.getPrice()+" "+getString(R.string.s_kwd));
         priceOld.setPaintFlags(priceOld.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        price.setText(getString(R.string.s_kwd)+" "+ product.getPrice());
+        price.setText(product.getPrice()+" "+getString(R.string.s_kwd));
+
         if (product.getPrice() != null
                 && !product.getNewPrice().isEmpty()
                 && !product.getNewPrice().equals("0")) {
-            price.setText(getString(R.string.s_kwd)+" "+product.getNewPrice());
+            price.setText(product.getNewPrice()+" "+getString(R.string.s_kwd));
             priceOld.setVisibility(View.VISIBLE);
         } else priceOld.setVisibility(View.GONE);
 //        addToCartText.setText(String.format(Locale.getDefault(), getString(R.string.add_to_cart_s), Float.parseFloat(product.getPrice()) * amount));

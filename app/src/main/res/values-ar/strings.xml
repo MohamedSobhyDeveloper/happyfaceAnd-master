@@ -260,7 +260,7 @@
 
     <string name="to">إلى</string>
 
-    <string name="cover_id">Cover id: %d </string>
+    <string name="cover_id">رقم الكارت:</string>
 
     <string name="to_s">الى: %s</string>
 
@@ -268,9 +268,9 @@
 
     <string name="from_s">من: %s </string>
 
-    <string name="edit_additionals">تعديل الاضافات</string>
+    <string name="edit_additionals">تعديل التغليف</string>
 
-    <string name="add_additionals">اضافة اضافات</string>
+    <string name="add_additionals">اضافة تغليف</string>
 
     <string name="title_activity_maps">خريطة</string>
 

@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
+        android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_normal_x" />
 
@@ -52,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:textAlignment="center"
         android:gravity="center_vertical"
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_small_x" />
@@ -89,4 +91,5 @@
             android:contentDescription="@string/add"
             android:src="@drawable/add_drawable" />
     </LinearLayout>
+
 </LinearLayout>

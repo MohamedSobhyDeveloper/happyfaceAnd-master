@@ -131,7 +131,7 @@
     <string name="save">Save</string>
     <string name="from">From</string>
     <string name="to">To</string>
-    <string name="cover_id">Cover id: %d </string>
+    <string name="cover_id">Cover id:</string>
     <string name="to_s">To: %s</string>
     <string name="message_s">message: %s</string>
     <string name="from_s">From: %s </string>

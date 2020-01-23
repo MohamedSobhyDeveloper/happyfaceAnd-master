@@ -114,11 +114,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/darker_gray" />
+
 
             <TextView
                 android:id="@+id/messageText"
@@ -128,18 +124,11 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
                 android:hint="@string/write_a_message"
-                android:paddingStart="0dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="8dp"
+                android:padding="@dimen/_20sdp"
+                android:background="@drawable/roundedbuttondrawablewhite"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_normal" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/chooseAddText"

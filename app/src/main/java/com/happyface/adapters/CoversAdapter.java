@@ -55,7 +55,7 @@ public class CoversAdapter extends RecyclerView.Adapter<CoversAdapter.Holder> {
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         DataItem cover = list.get(position);
         holder.name.setText(cover.getName());
-        holder.price.setText(context.getString(R.string.s_kwd)+" "+ cover.getPrice());
+        holder.price.setText(cover.getPrice()+" "+context.getString(R.string.s_kwd));
 //        Glide.with(context).load(cover.getCoverImage()).into(holder.image);
         Glide.with(context)
                 .asBitmap()

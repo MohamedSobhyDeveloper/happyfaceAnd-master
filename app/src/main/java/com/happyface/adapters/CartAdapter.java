@@ -93,8 +93,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
 
             if (cartItem.getAdditionalPrice() != 0) {
                 holder.additionalLayout.setVisibility(View.VISIBLE);
-                holder.priceAdditional.setText(activity.getString(R.string.s_kwd)+" "+cartItem.getAdditionalPrice());
+                holder.priceAdditional.setText(cartItem.getAdditionalPrice()+" "+activity.getString(R.string.s_kwd));
                 holder.editAddText.setText(activity.getString(R.string.edit_additionals));
+            }else {
+                holder.additionalLayout.setVisibility(View.GONE);
+                holder.editAddText.setText(activity.getString(R.string.add_additionals));
             }
 
             holder.editAdditional.setOnClickListener(v -> {
@@ -102,7 +105,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
             });
             holder.name.setText(cartItem.getProduct() != null ? cartItem.getProduct().getName() : "");
             holder.productId.setText(activity.getString(R.string.product_id_s)+" "+cartItem.getProductId());
-            holder.price.setText(activity.getString(R.string.s_kwd)+" "+cartItem.getPrice());
+            holder.price.setText(cartItem.getPrice()+" "+activity.getString(R.string.s_kwd));
             /*holder.itemView.setOnClickListener(v -> {
 
             });*/
@@ -111,11 +114,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
             holder.linear.setLayoutParams(params);
 
             int amount = Integer.parseInt(cartItem.getQuantity());
-            holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount));
+            holder.amountText.setText(amount+"");
             if (amount < 2)
                 holder.remove.setEnabled(false);
             holder.add.setOnClickListener(v -> {
-                holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount + 1));
+                holder.amountText.setText(amount + 1+"");
                 changeCartItem(cartItem, amount + 1, holder.amountText,holder.avi);
                 if (amount + 1 > 1)
                     holder.remove.setEnabled(true);
@@ -124,7 +127,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                 if (amount < 2)
                     holder.remove.setEnabled(false);
                 else {
-                    holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
+                    holder.amountText.setText(amount - 1+"");
                     changeCartItem(cartItem, amount - 1, holder.amountText,holder.avi);
                     if (amount - 1 < 2)
                         holder.remove.setEnabled(false);
@@ -133,7 +136,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
         } else {
             holder.totalLayout.setVisibility(View.GONE);
             holder.itemLayout.setVisibility(View.GONE);
-            holder.total.setText(activity.getString(R.string.f_kwd)+""+cartData.getTotal());
+            holder.total.setText(cartData.getTotal()+""+activity.getString(R.string.f_kwd));
         }
     }
 
@@ -180,7 +183,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Holder> {
                     // progress.setVisibility(View.GONE);
 //                    avi.setVisibility(View.GONE);
                     if (!response.isSuccessful()) {
-                        amountText.setText(String.format(Locale.getDefault(), "%d", amount));
+                        amountText.setText(amount+"");
                         StaticMembers.checkLoginRequired(response.errorBody(), activity,activity);
                     } else activity.getCart();
                 }

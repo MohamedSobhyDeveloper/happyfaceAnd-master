@@ -53,7 +53,7 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Hold
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         DataItem additional = list.get(position);
         holder.name.setText(additional.getName());
-        holder.price.setText(context.getString(R.string.s_kwd)+" "+additional.getPrice());
+        holder.price.setText(additional.getPrice()+" "+context.getString(R.string.s_kwd));
 //        Glide.with(context).load(additional.getImage()).into(holder.image);
         Glide.with(context)
                 .asBitmap()
@@ -77,14 +77,14 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Hold
 
         amount = additional.getAmount();
         amount = amount == 0 ? 1 : amount;
-        holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount));
+        holder.amountText.setText(amount+"");
         if (amount < 2)
             holder.remove.setEnabled(false);
         holder.add.setOnClickListener(v -> {
             amount = additional.getAmount();
             amount = amount == 0 ? 1 : amount;
             amount++;
-            holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount));
+            holder.amountText.setText(amount+"");
             additional.setAmount(amount);
             listener.onClick(position);
             if (amount > 1)
@@ -99,7 +99,7 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Hold
                 amount--;
                 additional.setAmount(amount);
                 listener.onClick(position);
-                holder.amountText.setText(String.format(Locale.getDefault(), "%d", amount));
+                holder.amountText.setText(amount+"");
                 if (amount < 2)
                     holder.remove.setEnabled(false);
             }

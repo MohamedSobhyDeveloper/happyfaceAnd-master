@@ -104,17 +104,30 @@ public class GiftsFragment extends DialogFragment {
 //                Glide.with(Objects.requireNonNull(getActivity())).load(product.getProduct().getLogo()).into(image);
             name.setText(product.getProduct() != null ? product.getProduct().getName() : "");
             productId.setText(getString(R.string.product_id_s)+" "+ product.getProductId());
-            price.setText(getString(R.string.s_kwd)+" "+ product.getPrice());
+            price.setText(product.getPrice()+" "+getString(R.string.s_kwd));
             params = new HashMap<>();
             params.put(StaticMembers.PRODUCT_ID, "" + product.getProduct().getId());
             params.put(StaticMembers.QUANTITY, product.getQuantity());
-            if (messageInput == null)
+
+            if (messageInput == null){
                 messageInput = new MessageInput();
-            messageInput.setFrom(product.getGiftMessegsFrom());
-            messageInput.setTo(product.getGiftMessegsTo());
-            messageInput.setMessage(product.getGiftMessegsMsg());
-            messageInput.setCoverId(product.getGiftMessage() == null ? -1 : product.getGiftMessage().getId());
-            changeMessageText(messageInput);
+
+                messageInput.setCoverId(product.getGiftMessage() == null ? -1 : product.getGiftMessage().getId());
+                if (product.getGiftMessegsFrom()!=null){
+                    messageInput.setFrom(product.getGiftMessegsFrom());
+
+                }
+                if (product.getGiftMessegsTo()!=null){
+                    messageInput.setTo(product.getGiftMessegsTo());
+                }
+                if (product.getGiftMessegsMsg()!=null){
+                    messageInput.setMessage(product.getGiftMessegsMsg());
+                }
+
+                changeMessageText(messageInput);
+
+            }
+
         }
         messageText.setOnClickListener(v -> {
             //TODO: Message Bottom Sheet Dialog
@@ -155,7 +168,8 @@ public class GiftsFragment extends DialogFragment {
         saveButton.setOnClickListener(v ->
         {
             //TODO: Save changes as a cart new product
-            changeCartItem();
+                changeCartItem();
+
         });
 
     }
@@ -169,13 +183,13 @@ public class GiftsFragment extends DialogFragment {
         if (messageInput1.getMessage() != null && !messageInput1.getMessage().isEmpty())
             stringBuilder.append(String.format(Locale.getDefault(), getString(R.string.message_s), messageInput1.getMessage())).append("\n");
         if (messageInput1.getCoverId() != -1) {
-            stringBuilder.append(String.format(Locale.getDefault(), getString(R.string.cover_id), messageInput1.getCoverId())).append("\n");
+            stringBuilder.append(getString(R.string.cover_id)+" "+messageInput1.getCoverId()).append("\n");
             params.put(StaticMembers.GIFT_MESSAGE_ID, "" + messageInput1.getCoverId());
         } else params.remove(StaticMembers.GIFT_MESSAGE_ID);
         messageText.setText(stringBuilder);
-        params.put(StaticMembers.GIFT_MESSAGE_FROM, messageInput1.getFrom());
-        params.put(StaticMembers.GIFT_MESSAGE_TO, messageInput1.getTo());
-        params.put(StaticMembers.GIFT_MESSAGE_TEXT, messageInput1.getMessage());
+        params.put(StaticMembers.GIFT_MESSAGE_FROM, messageInput1.getFrom()+"");
+        params.put(StaticMembers.GIFT_MESSAGE_TO, messageInput1.getTo()+"");
+        params.put(StaticMembers.GIFT_MESSAGE_TEXT, messageInput1.getMessage()+"");
     }
 
 
@@ -205,7 +219,6 @@ public class GiftsFragment extends DialogFragment {
                 public void onResponse(@NotNull Call<AddCartResponse> call, @NotNull Response<AddCartResponse> response) {
                     if (loading!=null&&loading.isShowing()){
                         loading.dismiss();
-
                     }
 
                     if (!response.isSuccessful()) {

@@ -202,7 +202,9 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@android:color/darker_gray" />
-</LinearLayout>
+
+    </LinearLayout>
+
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/avi"
         style="@style/AVLoadingIndicatorView"
@@ -216,4 +218,5 @@
         android:layout_centerInParent="true"
 
         />
+
 </RelativeLayout>

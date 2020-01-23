@@ -404,7 +404,7 @@ public class CartActivity extends BaseActivity {
                         cartData = response.body().getData();
                         adapter.setCartData(cartData);
                         adapter.notifyDataSetChanged();
-                        total.setText(getString(R.string.f_kwd)+" "+cartData.getTotal());
+                        total.setText(cartData.getTotal()+" "+getString(R.string.f_kwd));
                         if (cartData.getTotal()>0){
                             noItem.setVisibility(View.GONE);
                             chekoutLayout.setVisibility(View.VISIBLE);
