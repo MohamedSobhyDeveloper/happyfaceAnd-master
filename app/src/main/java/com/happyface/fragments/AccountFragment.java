@@ -253,7 +253,7 @@ public class AccountFragment extends Fragment {
             email.setText(user.getEmail());
 //            gov.setText(user.getGovernmant());
             //area.setText(user.getArea());
-            if (user.getLat()!=null&&!user.getLat().equals("0")){
+            if (user.getLat()!=null&&!user.getLat().equals("0")&&!user.getLat().equals("0.0")){
                 slat = Double.parseDouble(user.getLat());
                 slong = Double.parseDouble(user.getLon());
 //            currentLocation.setText(String.format(Locale.getDefault(), "%f, %f", slat, slong));

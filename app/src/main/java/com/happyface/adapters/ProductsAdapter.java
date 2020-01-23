@@ -129,7 +129,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Holder
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
                         StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(),activity);
                     } else if (response.body() != null) {
-                        context.startActivity(new Intent(getBaseContext(), CartActivity.class));
+//                        context.startActivity(new Intent(getBaseContext(), CartActivity.class));
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), response.body().getMessage());
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount));
                     }

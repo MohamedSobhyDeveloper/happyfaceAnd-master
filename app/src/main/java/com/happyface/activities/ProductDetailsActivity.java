@@ -200,7 +200,7 @@ public class ProductDetailsActivity extends BaseActivity {
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
                         StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(),ProductDetailsActivity.this);
                     } else if (response.body() != null) {
-                        startActivity(new Intent(getBaseContext(), CartActivity.class));
+//                        startActivity(new Intent(getBaseContext(), CartActivity.class));
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), response.body().getMessage());
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount));
                     }
