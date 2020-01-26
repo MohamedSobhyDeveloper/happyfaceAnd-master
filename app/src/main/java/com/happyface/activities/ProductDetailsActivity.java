@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
@@ -32,7 +31,6 @@ import com.happyface.models.search_products.ProDetails;
 import com.happyface.models.search_products.Product;
 import com.happyface.models.wishlist_models.ErrorWishListResponse;
 import com.happyface.models.wishlist_models.WishlistResponse;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -81,15 +79,22 @@ public class ProductDetailsActivity extends BaseActivity {
     ProductImagesAdapter adapter;
     VideoFragment videoFragment;
     ProDetails proDetails;
+    @BindView(R.id.remove)
+    ImageButton remove;
+    @BindView(R.id.amount)
+    TextView amounttv;
+    @BindView(R.id.add)
+    ImageButton add;
     private MenuItem favorite;
     Loading loading;
+    String actualPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
         ButterKnife.bind(this);
-      loading=new Loading(this);
+        loading = new Loading(this);
         product = (Product) getIntent().getSerializableExtra(StaticMembers.PRODUCT);
         adapter = new ProductImagesAdapter(getSupportFragmentManager());
         if (product.getVideo() != null) {
@@ -97,7 +102,7 @@ public class ProductDetailsActivity extends BaseActivity {
             adapter.addFragment(videoFragment);
         }
         for (String s : product.getPhotos()) {
-            ImageFragment imageFragment = ImageFragment.getInstance(s,product.getPhotos(),pager,this);
+            ImageFragment imageFragment = ImageFragment.getInstance(s, product.getPhotos(), pager, this);
             adapter.addFragment(imageFragment);
         }
         pager.setAdapter(adapter);
@@ -131,18 +136,64 @@ public class ProductDetailsActivity extends BaseActivity {
 
             }
         });
-        priceOld.setText(product.getPrice()+" "+getString(R.string.s_kwd));
+        priceOld.setText(product.getPrice() + " " + getString(R.string.s_kwd));
         priceOld.setPaintFlags(priceOld.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        price.setText(product.getPrice()+" "+getString(R.string.s_kwd));
+        price.setText(product.getPrice() + " " + getString(R.string.s_kwd));
+        actualPrice=product.getPrice()+"";
 
         if (product.getPrice() != null
                 && !product.getNewPrice().isEmpty()
                 && !product.getNewPrice().equals("0")) {
-            price.setText(product.getNewPrice()+" "+getString(R.string.s_kwd));
+            price.setText(product.getNewPrice() + " " + getString(R.string.s_kwd));
+            actualPrice=product.getNewPrice()+"";
             priceOld.setVisibility(View.VISIBLE);
         } else priceOld.setVisibility(View.GONE);
 //        addToCartText.setText(String.format(Locale.getDefault(), getString(R.string.add_to_cart_s), Float.parseFloat(product.getPrice()) * amount));
-        addToCartText.setText(getString(R.string.add_to_cart_s)+" ("+ Float.parseFloat(product.getPrice()) * amount+")");
+
+        add.setOnClickListener(v ->
+        {
+            amount++;
+            amounttv.setText(String.format(Locale.getDefault(), "%d", amount));
+            if (amount > 1){
+                remove.setEnabled(true);
+
+            }
+//            if (product.getProDetails().get(0).getCount() != null)
+//                if (amount >= maxAmount)
+//                    add.setEnabled(false);
+            if (product.getPrice() != null && !actualPrice.isEmpty()) {
+                float total = amount * Float.parseFloat(actualPrice);
+//                addToCartText.setText(getString(R.string.add_to_cart_s)+" "+ total);
+                addToCartText.setText(getString(R.string.add_to_cart_s) + " (" + total + ")");
+
+            }
+        });
+        remove.setOnClickListener(v ->
+        {
+            if (amount < 2)
+                remove.setEnabled(false);
+            else {
+                amount--;
+                amounttv.setText(String.format(Locale.getDefault(), "%d", amount));
+                if (amount < 2){
+                    remove.setEnabled(false);
+                }
+//                if (product.getProDetails().get(0).getCount() != null)
+//                    if (amount < maxAmount)
+//                        add.setEnabled(true);
+                if (actualPrice != null && !actualPrice.isEmpty()) {
+                    float total = amount * Float.parseFloat(actualPrice);
+//                    addToCartText.setText(getString(R.string.add_to_cart_s)+" "+total);
+                    addToCartText.setText(getString(R.string.add_to_cart_s) + " (" + total + ")");
+
+                }
+            }
+        });
+
+
+
+        addToCartText.setText(getString(R.string.add_to_cart_s) + " (" + Float.parseFloat(product.getPrice()) * amount + ")");
+        remove.setEnabled(false);
 
         subCode.setText(product.getProductNo());
         gender.setText(product.getGender() == 0 ? R.string.boy : R.string.girl);
@@ -174,13 +225,13 @@ public class ProductDetailsActivity extends BaseActivity {
 
     private void changeCartItem() {
         // progress.setVisibility(View.VISIBLE);
-        if (loading!=null){
+        if (loading != null) {
             loading.show();
 
         }
 
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
-            if (loading!=null&&loading.isShowing()){
+            if (loading != null && loading.isShowing()) {
                 loading.dismiss();
             }
             Intent intent = new Intent(getBaseContext(), LogInActivity.class);
@@ -188,17 +239,17 @@ public class ProductDetailsActivity extends BaseActivity {
             startActivity(intent);
         } else {
 
-            Call<AddCartResponse> call = RetrofitModel.getApi(this).addOrEditCart("" + product.getId(),1);
+            Call<AddCartResponse> call = RetrofitModel.getApi(this).addOrEditCart("" + product.getId(), Integer.parseInt(amounttv.getText().toString()));
             call.enqueue(new CallbackRetrofit<AddCartResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<AddCartResponse> call, @NotNull Response<AddCartResponse> response) {
-                    if (loading!=null&&loading.isShowing()){
+                    if (loading != null && loading.isShowing()) {
                         loading.dismiss();
 
                     }
                     if (!response.isSuccessful()) {
                         //amountText.setText(String.format(Locale.getDefault(), "%d", amount - 1));
-                        StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(),ProductDetailsActivity.this);
+                        StaticMembers.checkLoginRequired(response.errorBody(), getBaseContext(), ProductDetailsActivity.this);
                     } else if (response.body() != null) {
 //                        startActivity(new Intent(getBaseContext(), CartActivity.class));
                         StaticMembers.toastMessageShortSuccess(getBaseContext(), response.body().getMessage());
@@ -209,7 +260,7 @@ public class ProductDetailsActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<AddCartResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    if (loading!=null&&loading.isShowing()){
+                    if (loading != null && loading.isShowing()) {
                         loading.dismiss();
 
                     }
@@ -220,12 +271,12 @@ public class ProductDetailsActivity extends BaseActivity {
 
     private void changeFavorite() {
         //progress.setVisibility(View.VISIBLE);
-        if (loading!=null){
+        if (loading != null) {
             loading.show();
 
         }
         if (PrefManager.getInstance(getBaseContext()).getAPIToken().isEmpty()) {
-            if (loading!=null&&loading.isShowing()){
+            if (loading != null && loading.isShowing()) {
                 loading.dismiss();
             }
             StaticMembers.openLogin(this);
@@ -234,7 +285,7 @@ public class ProductDetailsActivity extends BaseActivity {
             call.enqueue(new CallbackRetrofit<WishlistResponse>(this) {
                 @Override
                 public void onResponse(@NotNull Call<WishlistResponse> call, @NotNull Response<WishlistResponse> response) {
-                    if (loading!=null&&loading.isShowing()){
+                    if (loading != null && loading.isShowing()) {
                         loading.dismiss();
 
                     }
@@ -255,7 +306,7 @@ public class ProductDetailsActivity extends BaseActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        StaticMembers.checkLoginRequired(response.errorBody(), ProductDetailsActivity.this,ProductDetailsActivity.this);
+                        StaticMembers.checkLoginRequired(response.errorBody(), ProductDetailsActivity.this, ProductDetailsActivity.this);
 
                     }
                 }
@@ -263,7 +314,7 @@ public class ProductDetailsActivity extends BaseActivity {
                 @Override
                 public void onFailure(@NotNull Call<WishlistResponse> call, @NotNull Throwable t) {
                     super.onFailure(call, t);
-                    if (loading!=null&&loading.isShowing()){
+                    if (loading != null && loading.isShowing()) {
                         loading.dismiss();
 
                     }
