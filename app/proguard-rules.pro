@@ -26,7 +26,7 @@
 -keepattributes Exceptions
 -dontwarn okio.**
 -dontwarn javax.annotation.**
--keep class com.happyface.models.**{*;}
+-keep class com.happyfaceapp.models.**{*;}
 
 -keep class **$$ViewBinder { *; }
 -dontwarn butterknife.internal.**
