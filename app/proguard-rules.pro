@@ -21,3 +21,16 @@
 #-renamesourcefileattribute SourceFile
 -keep class com.wang.avi.** { *; }
 -keep class com.wang.avi.indicators.** { *; }
+
+-keepattributes Signature
+-keepattributes Exceptions
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-keep class com.happyfaceapp.models.**{*;}
+
+-keep class **$$ViewBinder { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewInjector { *; }
+-keepnames class * { @butterknife.InjectView *;}
+-keep class com.parse.*{ *; }
+-dontwarn com.parse.**
