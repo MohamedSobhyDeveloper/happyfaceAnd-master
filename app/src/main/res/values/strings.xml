@@ -160,4 +160,5 @@
     <string name="area_">Area:</string>
     <string name="avenue_">Avenue:</string>
     <string name="remark_address_">Remark Address:</string>
+    <string name="data_updated_successfully">Data Updated Successfully</string>
 </resources>
