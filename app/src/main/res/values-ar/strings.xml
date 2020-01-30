@@ -306,4 +306,5 @@
     <string name="area_">المنطقة:</string>
     <string name="avenue_">الجادة:</string>
     <string name="remark_address_">ملاحظات العنوان:</string>
+    <string name="data_updated_successfully">تم التحديث بنجاح</string>
 </resources>

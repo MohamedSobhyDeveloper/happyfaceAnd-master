@@ -342,7 +342,7 @@ public class AccountFragment extends Fragment {
                         StaticMembers.toastMessageShortSuccess(getContext(), result.getMessage());
                     }
                 } else {
-                    StaticMembers.toastMessageShortSuccess(getActivity(), "Data Updated Successfully");
+                    StaticMembers.toastMessageShortSuccess(getActivity(), getString(R.string.data_updated_successfully));
                 }
             }
 
