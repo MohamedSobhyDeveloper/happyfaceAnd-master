@@ -67,7 +67,7 @@
                         android:layout_width="?actionBarSize"
                         android:layout_height="?actionBarSize"
                         android:padding="8dp"
-                        android:src="@drawable/happy" />
+                        android:src="@drawable/hartlogo" />
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>

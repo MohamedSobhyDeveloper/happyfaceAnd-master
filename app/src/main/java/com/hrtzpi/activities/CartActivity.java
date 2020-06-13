@@ -330,7 +330,7 @@ public class CartActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (
-                        StaticMembers.CheckTextInputEditText(block, getString(R.string.block_empty))&&
+//                        StaticMembers.CheckTextInputEditText(block, getString(R.string.block_empty))&&
                         StaticMembers.CheckTextInputEditText(street, getString(R.string.street_empty))&&
                         StaticMembers.CheckTextInputEditText(houseNo, getString(R.string.houseno_empty))
                 ){
