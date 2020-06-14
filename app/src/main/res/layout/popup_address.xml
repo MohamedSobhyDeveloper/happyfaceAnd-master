@@ -345,6 +345,7 @@
                     android:textAlignment="viewStart"
                     tools:ignore="RtlCompat"
                     android:layout_marginBottom="@dimen/_5sdp"
+                    android:visibility="gone"
                     android:background="@drawable/roundedbuttondrawablewhite"
                     />
 

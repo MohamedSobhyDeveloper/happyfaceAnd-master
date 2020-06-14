@@ -101,7 +101,7 @@ class MainActivity : BaseActivity() {
                     .setDescription(R.string.want_to_exit)
                     .setPositiveText(R.string.yes)
                     .setNegativeText(R.string.no)
-                    .setIcon(R.mipmap.ic_launcher)
+                    .setIcon(R.drawable.hartlogo)
                     .setHeaderColor(R.color.colorPrimary)
                     .withDialogAnimation(true)
                     .withIconAnimation(true)
