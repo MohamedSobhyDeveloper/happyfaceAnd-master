@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -87,6 +88,7 @@ public class CartActivity extends BaseActivity {
     Dialog dialogview;
     BottomSheetDialog dialog;
     Loading loading;
+    String payment="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +193,7 @@ public class CartActivity extends BaseActivity {
      //region Open Dialog View
 
     private void setupBottomSheet() {
+        payment=getResources().getString(R.string.cash);
 
         @SuppressLint("InflateParams") View modalbottomsheet = getLayoutInflater().inflate(R.layout.create_modal_popup, null);
 
@@ -202,6 +205,26 @@ public class CartActivity extends BaseActivity {
         TextView btn_cancel = modalbottomsheet.findViewById(R.id.tv_cancel);
         Button btneditProfile = modalbottomsheet.findViewById(R.id.edit_profile_btn);
         Button btnCheckout = modalbottomsheet.findViewById(R.id.checkout_btn);
+
+        RadioGroup rg = modalbottomsheet.findViewById(R.id.radiagroup);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch(checkedId)
+                {
+                    case R.id.link:
+                        payment=getResources().getString(R.string.visa_knet);
+
+                        break;
+                    case R.id.cash:
+                        payment=getResources().getString(R.string.cash);
+                        break;
+                }
+            }
+        });
+
         btn_cancel.setOnClickListener(view -> dialog.hide());
 
         btneditProfile.setOnClickListener(new View.OnClickListener() {
@@ -544,6 +567,7 @@ public class CartActivity extends BaseActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("code", "0");
         params.put("vip", "0");
+        params.put("payment", payment);
 
         Call<ModelStoreOrder> call = RetrofitModel.getApi(this).storeOrder(params);
         call.enqueue(new CallbackRetrofit<ModelStoreOrder>(this) {
@@ -595,7 +619,7 @@ public class CartActivity extends BaseActivity {
                 currentLocationvalue=String.format(Locale.getDefault(), getString(R.string.current_location_s), slat, slong);
             }
         }
-    }
+}
 
 
 

@@ -307,4 +307,19 @@
     <string name="avenue_">الجادة:</string>
     <string name="remark_address_">ملاحظات العنوان:</string>
     <string name="data_updated_successfully">تم التحديث بنجاح</string>
+    <string name="visa_knet">كى نت</string>
+    <string name="cash">نقدا</string>
+    <string name="discount">خصومات</string>
+    <string name="payment_method">وسيلة الدفع </string>
+    <string name="thanks_for_using_abo100_application">شكرا ل استخدامك تطبيق هابى فيس</string>
+    <string name="product_name"> المنتج</string>
+    <string name="quantity">العدد</string>
+    <string name="price_total">الاجمالى</string>
+    <string name="price">السعر</string>
+    <string name="delivery_charge">خدمة التوصيل</string>
+    <string name="order_">طلب</string>
+    <string name="product_number">كود المنتج:</string>
+    <string name="color">اللون</string>
+    <string name="shape">الشكل</string>
+
 </resources>

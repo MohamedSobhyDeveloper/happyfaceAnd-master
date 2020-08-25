@@ -27,6 +27,17 @@ public class Result {
     @Expose
     @SerializedName("id")
     private int id;
+    @Expose
+    @SerializedName("payment_way")
+    private String payment_way;
+
+    public String getPayment_way() {
+        return payment_way;
+    }
+
+    public void setPayment_way(String payment_way) {
+        this.payment_way = payment_way;
+    }
 
     public List<Item> getItem() {
         return item;

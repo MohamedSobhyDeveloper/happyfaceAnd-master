@@ -1,6 +1,8 @@
 package com.happyfaceapp.helpers;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -9,19 +11,26 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.cardview.widget.CardView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.GsonBuilder;
 import com.happyfaceapp.R;
 import com.happyfaceapp.activities.LogInActivity;
+import com.happyfaceapp.activities.MainActivity;
 import com.happyfaceapp.activities.SplashActivity;
 import com.happyfaceapp.models.login_models.ErrorLoginResponse;
+import com.happyfaceapp.models.storeorder.ModelStoreOrder;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.IOException;
@@ -33,6 +42,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class StaticMembers {
 
@@ -417,4 +428,137 @@ public class StaticMembers {
             e.printStackTrace();
         }
     }
+
+//
+//    @SuppressLint("SetTextI18n")
+//    public static void opendetailsdialog(Context context, ModelStoreOrder storeOrderResponse, double discount, double net, String payment) {
+//        Dialog dialogview = new Dialog(context);
+//        dialogview.setContentView(R.layout.create_details_popup);
+//        dialogview.setCanceledOnTouchOutside(false);
+//        dialogview.setCancelable(false);
+//        dialogview.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.FILL_PARENT);
+//
+//        CardView home = dialogview.findViewById(R.id.home);
+//        TextView delivery_charge = dialogview.findViewById(R.id.delivery_charge);
+//        TextView total = dialogview.findViewById(R.id.total);
+//        TextView discounttv = dialogview.findViewById(R.id.discount);
+//        TextView payment_method = dialogview.findViewById(R.id.payment_method);
+//        TextView address = dialogview.findViewById(R.id.address);
+//        TextView order_number = dialogview.findViewById(R.id.order_number);
+//        LinearLayout llayout_item = dialogview.findViewById(R.id.llayout_item);
+//        TextView close = dialogview.findViewById(R.id.close);
+//
+//        discounttv.setText(discount+" "+"%");
+//        double totalvalueall=net*discount/100;
+//        total.setText(net-totalvalueall+" "+context.getString(R.string.f_kwd));
+//
+//        payment_method.setText(storeOrderResponse.getData().getResult().getPayment_way()+"");
+//        order_number.setText(context.getString(R.string.order_)+" "+"#"+" "+storeOrderResponse.getData().getResult().getId()+"");
+//        delivery_charge.setText(storeOrderResponse.getData().getResult().getDeliverycharge()+" "+context.getString(R.string.f_kwd));
+//        address.setText(storeOrderResponse.getData().getResult().getAddress()+"");
+//
+//
+//        home.setOnClickListener(view -> {
+//            Intent intent = new Intent(context, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            context.startActivity(intent);
+//        });
+//
+//        close.setOnClickListener(view -> {
+//            Intent intent = new Intent(context, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            context.startActivity(intent);
+//        });
+//
+//
+//        for (int i=0;i<storeOrderResponse.getData().getResult().getItem().size();i++){
+//
+//            LayoutInflater inflater = (LayoutInflater) context.getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+//            final View rowView;
+//            if (inflater != null) {
+//
+//                rowView = inflater.inflate(R.layout.item_product_inflate, null);
+//                TextView name = rowView.findViewById(R.id.name);
+//                TextView productId = rowView.findViewById(R.id.productId);
+//                TextView productnumber = rowView.findViewById(R.id.productnumber);
+//                TextView amount = rowView.findViewById(R.id.amount);
+//                TextView price = rowView.findViewById(R.id.price);
+//                TextView Totalprice = rowView.findViewById(R.id.Totalprice);
+//                TextView unit = rowView.findViewById(R.id.unit);
+//                TextView color = rowView.findViewById(R.id.color);
+//                TextView shape = rowView.findViewById(R.id.shape);
+//
+//
+////                if (storeOrderResponse.getData().getResult().getItem().get(i).getUnit()!=null&&!storeOrderResponse.getData().getResult().getItem().get(i).getUnit().equals("0")&&!storeOrderResponse.getData().getResult().getItem().get(i).getUnit().equals("")){
+////                    unit.setVisibility(View.VISIBLE);
+////                    unit.setText(context.getString(R.string.shapesize)+" : "+storeOrderResponse.getData().getResult().getItem().get(i).getUnit()+"");
+////
+////                }else{
+////                    unit.setVisibility(View.GONE);
+////                }
+//
+//                if (!storeOrderResponse.getData().getResult().getItem().get(i).getHastag().equals("")){
+//
+//                    if (!storeOrderResponse.getData().getResult().getItem().get(i).getColor_name().equals("")){
+//                        color.setVisibility(View.VISIBLE);
+//                        color.setText(context.getString(R.string.color)+" : "+storeOrderResponse.getData().getResult().getItem().get(i).getColor_name()+"");
+//
+//                    }else {
+//                        color.setVisibility(View.GONE);
+//
+//                    }
+//
+//                }else {
+//                    color.setVisibility(View.GONE);
+//                }
+//
+//
+//                if (storeOrderResponse.getData().getResult().getItem().get(i).getUnit()!=null&&!storeOrderResponse.getData().getResult().getItem().get(i).getUnit().equals("")){
+//                    shape.setVisibility(View.VISIBLE);
+//                    shape.setText(context.getString(R.string.shape)+" : "+storeOrderResponse.getData().getResult().getItem().get(i).getUnit()+"");
+//
+//                }else {
+//                    shape.setVisibility(View.GONE);
+//                }
+//
+//
+//
+//
+//                name.setText(storeOrderResponse.getData().getResult().getItem().get(i).getProduct_name()+"");
+////                productId.setText(storeOrderResponse.getData().getResult().getItem().get(i).getSubcode()+"-"+storeOrderResponse.getData().getResult().getItem().get(i).getProduct_no());
+//                productnumber.setText(context.getString(R.string.product_number) + " " + storeOrderResponse.getData().getResult().getItem().get(i).getSubcode() + "");
+//                productId.setText(String.format(Locale.getDefault(), context.getString(R.string.product_id_s), storeOrderResponse.getData().getResult().getItem().get(i).getProduct_no()));
+//
+//
+//                amount.setText(storeOrderResponse.getData().getResult().getItem().get(i).getQuantity());
+//
+//                double pricevlaue= Double.parseDouble(storeOrderResponse.getData().getResult().getItem().get(i).getPrice());
+//                double quantity= Integer.parseInt(storeOrderResponse.getData().getResult().getItem().get(i).getQuantity());
+//
+//                double totalvalue=pricevlaue*quantity;
+//
+//                price.setText(storeOrderResponse.getData().getResult().getItem().get(i).getPrice()+" ");
+//                Totalprice.setText(totalvalue+" ");
+//
+//
+//                llayout_item.addView(rowView);
+//            }
+//
+//
+//        }
+//
+//
+//
+//
+//
+//        dialogview.show();
+//
+//
+//    }
+//
+
+
+
+
+
 }

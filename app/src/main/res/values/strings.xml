@@ -161,4 +161,19 @@
     <string name="avenue_">Avenue:</string>
     <string name="remark_address_">Remark Address:</string>
     <string name="data_updated_successfully">Data Updated Successfully</string>
+    <string name="visa_knet">KNET</string>
+    <string name="cash">CASH</string>
+    <string name="discount">Discount</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="thanks_for_using_abo100_application">Thanks for using HappyFace application</string>
+    <string name="product_name"> product name</string>
+    <string name="quantity">quantity</string>
+    <string name="price_total">Total</string>
+    <string name="price">Price</string>
+    <string name="delivery_charge">delivery charge</string>
+    <string name="order_">order</string>
+    <string name="product_number">Product number:</string>
+    <string name="color">color</string>
+    <string name="shape">shape</string>
+
 </resources>
