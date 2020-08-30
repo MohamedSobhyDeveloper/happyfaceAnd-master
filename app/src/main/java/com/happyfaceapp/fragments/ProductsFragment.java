@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -20,7 +21,6 @@ import com.happyfaceapp.helpers.Loading;
 import com.happyfaceapp.helpers.RetrofitModel;
 import com.happyfaceapp.models.search_products.Product;
 import com.happyfaceapp.models.search_products.ProductsResponse;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,6 +49,9 @@ public class ProductsFragment extends Fragment {
     private boolean isRefresh;
     HashMap<String, String> params;
     Loading  loading;
+    private boolean loadingv = true;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    LinearLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
 
     @Nullable
     @Override
@@ -62,25 +65,57 @@ public class ProductsFragment extends Fragment {
         ButterKnife.bind(this, view);
         loading=new Loading(getActivity());
         productList = new ArrayList<>();
+        recycler.setLayoutManager(layoutManager);
         adapter = new ProductsAdapter(getContext(), productList, loading,getActivity());
         recycler.setAdapter(adapter);
+//        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (!recyclerView.canScrollVertically(1) && !reachBottom && page < maxPage) {
+//                    reachBottom = true;
+//                    page++;
+//                    params.put("page",page+"");
+//                    getProducts(false);
+//                }
+//            }
+//        });
+
+
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1) && !reachBottom && page < maxPage) {
-                    reachBottom = true;
-                    page++;
-                    getProducts();
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+
+
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            if (page < maxPage) {
+                                reachBottom = true;
+                                page++;
+                                params.put("page",page+"");
+                                getProducts(false);
+                            }
+                        }
+
                 }
             }
+
         });
+
+
+
         swipe.setOnRefreshListener(this::getProducts);
         getProducts();
     }
 
     public void getProducts() {
+        params.remove("page");
+        page=1;
         getProducts(true);
+
     }
 
     public void getProducts(boolean isRef) {
@@ -99,6 +134,7 @@ public class ProductsFragment extends Fragment {
 
                 }
                 swipe.setRefreshing(false);
+                reachBottom=false;
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     maxPage = response.body().getData().getLastPage();
                     if (isRefresh || isRef)
