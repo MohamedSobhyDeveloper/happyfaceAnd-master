@@ -25,6 +25,28 @@ public class Item {
     @Expose
     @SerializedName("id")
     private int id;
+    @Expose
+    @SerializedName("product_name")
+    private String product_name;
+    @Expose
+    @SerializedName("product_no")
+    private String product_no;
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public String getProduct_no() {
+        return product_no;
+    }
+
+    public void setProduct_no(String product_no) {
+        this.product_no = product_no;
+    }
 
     public int getAdditional_price() {
         return additional_price;

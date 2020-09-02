@@ -30,6 +30,17 @@ public class Result {
     @Expose
     @SerializedName("payment_way")
     private String payment_way;
+    @Expose
+    @SerializedName("address")
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getPayment_way() {
         return payment_way;

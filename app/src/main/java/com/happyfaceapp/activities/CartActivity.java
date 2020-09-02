@@ -567,7 +567,7 @@ public class CartActivity extends BaseActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("code", "0");
         params.put("vip", "0");
-        params.put("payment", payment);
+        params.put("payment_way", payment);
 
         Call<ModelStoreOrder> call = RetrofitModel.getApi(this).storeOrder(params);
         call.enqueue(new CallbackRetrofit<ModelStoreOrder>(this) {
@@ -581,9 +581,7 @@ public class CartActivity extends BaseActivity {
                     ModelStoreOrder result = response.body();
                     if (result != null) {
                         if (result.getStatus()) {
-                            StaticMembers.toastMessageShortSuccess(CartActivity.this, result.getMessage());
-                            startActivity(new Intent(CartActivity.this,ConfirmBillActivity.class));
-                            finish();
+                            StaticMembers.opendetailsdialog(CartActivity.this,result);
 
                         }
                     }
