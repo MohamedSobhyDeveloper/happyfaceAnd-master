@@ -453,7 +453,7 @@ public class StaticMembers {
 
         payment_method.setText(storeOrderResponse.getData().getResult().getPayment_way()+"");
         order_number.setText(context.getString(R.string.order_)+" "+"#"+" "+storeOrderResponse.getData().getResult().getId()+"");
-//        delivery_charge.setText(storeOrderResponse.getData().getResult().getDeliverycharge()+" "+context.getString(R.string.f_kwd));
+        delivery_charge.setText(storeOrderResponse.getData().getResult().getDelivery_charge()+" "+context.getString(R.string.f_kwd));
         address.setText(storeOrderResponse.getData().getResult().getAddress()+"");
 
 

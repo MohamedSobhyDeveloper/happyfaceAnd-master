@@ -33,6 +33,17 @@ public class Result {
     @Expose
     @SerializedName("address")
     private String address;
+    @Expose
+    @SerializedName("delivery_charge")
+    private String delivery_charge;
+
+    public String getDelivery_charge() {
+        return delivery_charge;
+    }
+
+    public void setDelivery_charge(String delivery_charge) {
+        this.delivery_charge = delivery_charge;
+    }
 
     public String getAddress() {
         return address;
